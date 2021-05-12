@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "962682212903",
+    "firebase_url": "https://affable-fabric-288412.firebaseio.com",
+    "project_id": "affable-fabric-288412",
+    "storage_bucket": "affable-fabric-288412.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962682212903:android:a6be30b6c459b5f7b0f402",
+        "android_client_info": {
+          "package_name": "com.myappcompany.proprakhar.krishnasweets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962682212903-0o314q51ev28i2rodui7ffmb3gbgf5eu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXBocDfAZ2J3pky04-dT7p1876vSXBJzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962682212903-0o314q51ev28i2rodui7ffmb3gbgf5eu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

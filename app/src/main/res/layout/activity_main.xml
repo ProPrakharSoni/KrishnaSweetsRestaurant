@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/opening1" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFCFC"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="105dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/mychef" />
+
+        <TextView
+            android:id="@+id/krishna_sweet_logo"
+            android:layout_width="230dp"
+            android:layout_height="match_parent"
+            android:background="#E1E87D"
+            android:backgroundTint="#76E8D6"
+            android:gravity="center"
+            android:text="Krishna Sweets"
+            android:textColor="#FB0E76"
+            android:textSize="30sp"
+            android:textStyle="bold|italic" />
+
+        <ImageView
+            android:id="@+id/cart"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/cart1" />
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="102dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/mychef" />
+
+    </LinearLayout>
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="0dp"
+        android:layout_height="550dp"
+        app:columnCount="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:rowCount="7">
+
+        <Button
+            android:id="@+id/Pasta"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Pasta"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Rice"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Fried Rice"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Chinese"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Chinese"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Chaumin"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Noodles"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Burger"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Burger"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Pav_Baji"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Pav Baji"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Ice_Cream"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Ice Cream"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Dhosa"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Dhosa"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Soup"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Soup"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Cold_Drink"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Cold drink"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Bakery"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Bakery"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Nasta"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Nasta"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Sweets"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Sweets"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/Pizza"
+            android:layout_width="24dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_corner"
+            android:radius="30dp"
+            android:text="Pizza"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+    </androidx.gridlayout.widget.GridLayout>
+
+    <Button
+        android:id="@+id/specialButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
+        android:background="@color/teal_200"
+        android:text="Special"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
