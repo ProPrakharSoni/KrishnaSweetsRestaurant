@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A36767"
+    android:background="#FFFFFF"
     tools:context=".BuyActivity">
 
     <ImageView
@@ -16,8 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/openingperfect" />
-
+        app:srcCompat="@drawable/opening1" />
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
@@ -120,6 +119,9 @@
                 android:textColor="#0813E6"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
+
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -139,13 +141,60 @@
 
             <TextView
                 android:id="@+id/buyItemPrice"
-                android:layout_width="match_parent"
+                android:layout_width="104dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:text="Price"
                 android:textColor="#ED0957"
                 android:textSize="18sp"
                 android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Qty:"
+                android:textColor="#C50707"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="138dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="15dp">
+
+                <Button
+                    android:id="@+id/itemInc"
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:background="#03A9F4"
+                    android:text="+"
+                    android:textColor="#0C0C0C"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/buyQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="#120101" />
+
+                <Button
+                    android:id="@+id/itemDec"
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:background="#03A9F4"
+                    android:text="-"
+                    android:textColor="#0C0C0C"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
@@ -156,7 +205,7 @@
             android:layout_marginLeft="20sp">
 
             <RadioButton
-                android:id="@+id/radioCategory1"
+                android:id="@+id/cashOnDelivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="#0E8BEF"
@@ -187,6 +236,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/rounded_corner"
                 android:text="Add to Cart" />
 
             <Button
@@ -194,6 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/rounded_corner"
                 android:text="Buy Now" />
         </LinearLayout>
     </LinearLayout>

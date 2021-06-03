@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ImageViewCompat;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
            // intent.putExtra("giveItem","");
             //startActivity(intent);
+            startActivity(new Intent(getApplicationContext(),UserProfile.class));
         }
     });
     Pasta=findViewById(R.id.Pasta);
@@ -167,13 +169,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),CartActivity.class));
         }
     });
-        Picasso.get()
-                .load(mAuth.getCurrentUser().getPhotoUrl())
-                //.placeholder(R.mipmap.ic_launcher)
+//        Picasso.get()
+//                .load(mAuth.getCurrentUser().getPhotoUrl())
+//                //.placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+//                .centerInside()
+//                .fit()
+//                .transform(new CropCircleTransformation())
+//                .into(profile);
+        Glide.with(getApplicationContext())
+                .load(mAuth.getCurrentUser().getPhotoUrl()) // image url
+                //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+                .override(200, 200) // resizing
                 .centerInside()
-                .fit()
-                .transform(new CropCircleTransformation())
                 .into(profile);
     }
 

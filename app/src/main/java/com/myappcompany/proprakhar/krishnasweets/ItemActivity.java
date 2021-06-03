@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import pl.droidsonroids.gif.GifImageView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,15 +31,15 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
     RecyclerView.LayoutManager layoutManager;
     private List<Upload> mUploads;
     private DatabaseReference mDatabaseRef;
-    private ProgressBar mProgressBar;
     String Url;
     Intent intent;
+    GifImageView chefGif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
-        mProgressBar=findViewById(R.id.progressBarInRecyclerView);
+        chefGif=findViewById(R.id.chefGif);
         mRecyclerView=findViewById(R.id.itemRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         layoutManager=new GridLayoutManager(this,2);
@@ -66,13 +67,13 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
                     }
                     mAdapter = new ItemAdapter(ItemActivity.this, mUploads,ItemActivity.this);
                     mRecyclerView.setAdapter(mAdapter);
-                    mProgressBar.setVisibility(View.INVISIBLE);
+                    chefGif.setVisibility(View.INVISIBLE);
                     //i think to save bitmap in an array.
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    mProgressBar.setVisibility(View.INVISIBLE);
+                    chefGif.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -101,6 +102,21 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
 
     @Override
     public void onItemLongClick(int position) {
+
+    }
+
+    @Override
+    public void onIncClick(int value, int position) {
+
+    }
+
+    @Override
+    public void onDecClick(int value,int position) {
+
+    }
+
+    @Override
+    public void onItemDelete(int position) {
 
     }
 }

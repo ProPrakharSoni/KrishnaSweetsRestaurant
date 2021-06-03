@@ -2,9 +2,12 @@ package com.myappcompany.proprakhar.krishnasweets;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -37,15 +40,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 
 public class AdminActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST=1;
-    Button logout,gallery,mUploadButton;
+    Button logout,gallery,mUploadButton,userView;
     GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
     Spinner mItemSpinner;
-    ProgressBar mProgressBarImageUploading;
+    ProgressBar mProgressBarImageUploading,checkUploadProgress;
     private Uri mImageUri;
     Bitmap bitmap;
     private ImageView mImageView;
@@ -61,6 +65,8 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         itemNameEditText=findViewById(R.id.itemNameEditText);
+        userView=findViewById(R.id.userView);
+        checkUploadProgress=findViewById(R.id.checkUploadProgress);
         category1EditText=findViewById(R.id.category1EditText);
         category2EditText=findViewById(R.id.category2EditText);
         priceCategory1EditText=findViewById(R.id.price1EditText);
@@ -70,7 +76,15 @@ public class AdminActivity extends AppCompatActivity {
         mUploadButton=findViewById(R.id.uploadButton);
         gallery= findViewById(R.id.gallery);
         mImageView=findViewById(R.id.imageToUpload);
+        checkUploadProgress.setVisibility(View.INVISIBLE);
+        userView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            }
+        });
         String[] itemCategories={"Pasta","FriedRice","Chinese","Noodles","Burger","PavBaji","IceCream","Dhhosa","Soup","ColdDrink","Bakery","Nasta","Sweets","Pizza"};
+        Arrays.sort(itemCategories);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,itemCategories);
         mItemSpinner.setAdapter(adapter);
         logout = findViewById(R.id.logoutAdmin);
@@ -88,6 +102,12 @@ public class AdminActivity extends AppCompatActivity {
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProgressBarImageUploading.setProgress(0);
+                itemNameEditText.setText("");
+                category1EditText.setText("");
+                category2EditText.setText("");
+                priceCategory1EditText.setText("");
+                priceCategory2EditText.setText("");
                   openFileChoosen();
             }
         });
@@ -107,11 +127,15 @@ public class AdminActivity extends AppCompatActivity {
                         priceCategory1EditText.setError("Error");
                         counter++;
                     }
+                    if(category1EditText.getText().toString().isEmpty()){
+                        category1EditText.setError("Error");
+                        counter++;
+                    }
                     if (counter == 0) {
                         mStorageRef = FirebaseStorage.getInstance().getReference(mItemSpinner.getSelectedItem().toString());
                         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mItemSpinner.getSelectedItem().toString());
+                        checkUploadProgress.setVisibility(View.VISIBLE);
                         uploadFile();
-
                     }
                 }
             }
@@ -173,14 +197,19 @@ public class AdminActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //  Toast.makeText(Profilepic.this, "Upload successful", Toast.LENGTH_LONG).show();
                     //Toast.makeText(MainActivity.this, "Uploaded Succesfully", Toast.LENGTH_SHORT).show();
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mProgressBarImageUploading.setProgress(0);
-                        }
-                    },500);
-                    Toast.makeText(getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+
+
+//                    Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mProgressBarImageUploading.setProgress(0);
+//                        }
+//                    },500);
+
+                    //checkUploadProgress.setVisibility(View.INVISIBLE);
+                    //Toast.makeText(getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+
                     //
                     fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
@@ -195,6 +224,9 @@ public class AdminActivity extends AppCompatActivity {
                             String uploadId = mDatabaseRef.push().getKey();
                            mDatabaseRef.child(itemNameEditText.getText().toString()).setValue(upload);
                             //mDatabaseRef.child(uploadId).setValue(upload);
+
+                            checkUploadProgress.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
                         }});
                     //
                     //Log.i("AMan",picUrl);
@@ -205,7 +237,8 @@ public class AdminActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     //  Toast.makeText(Profilepic.this, "Upload Failed -> " + e, Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(), "Uploaded Succesfully", Toast.LENGTH_SHORT).show();
+                    checkUploadProgress.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), "Upload fail", Toast.LENGTH_SHORT).show();
 
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

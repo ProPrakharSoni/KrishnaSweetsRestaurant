@@ -1,7 +1,5 @@
 package com.myappcompany.proprakhar.krishnasweets;
 
-import android.widget.Toast;
-
 public class Upload {
 
     private  String mItemName,mCategory1,mCategory2,mImageUrl;
@@ -12,22 +10,6 @@ public class Upload {
         //Empty constructor needed.
     }
     public  Upload(String itemName,String category1,String category2,String imageUrl,String priceCategory1 ,String priceCategory2 ){
-//      if(itemName.trim().equals("")){
-//          mItemName="No Name";
-//      }
-//        if(itemName.trim().equals("")){
-//            mItemName="No Name";
-//        }if(category1.trim().equals("")){
-//            mCategory1="No Name";
-//        }if(category2.trim().equals("")){
-//            mCategory2="No Name";
-//        }if(imageUrl.trim().equals("")){
-//            mCategory2="No Name";
-//        }if(priceCategory1.trim().equals("")){
-//            mPriceCategory1="No Name";
-//        }if(priceCategory2.trim().equals("")){
-//            mPriceCategory2="No Name";
-//        }
       mItemName=itemName;
 
       mCategory1=category1;

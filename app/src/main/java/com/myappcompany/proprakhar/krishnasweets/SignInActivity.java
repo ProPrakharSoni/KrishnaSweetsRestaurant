@@ -2,6 +2,8 @@ package com.myappcompany.proprakhar.krishnasweets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import pl.droidsonroids.gif.GifImageView;
+
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,6 +28,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +82,6 @@ public class SignInActivity extends AppCompatActivity {
             //textView.setVisibility(View.INVISIBLE);
             opening.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.VISIBLE);
-
             findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
             checkUserAccessLevel(mAuth.getCurrentUser().getUid());
         }
@@ -113,7 +115,8 @@ public class SignInActivity extends AppCompatActivity {
         findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
         chefImage.setVisibility(View.INVISIBLE);
         textView.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
+       mProgressBar.setVisibility(View.VISIBLE);
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -154,14 +157,26 @@ public class SignInActivity extends AppCompatActivity {
          @Override
          public void onSuccess(DocumentSnapshot documentSnapshot) {
 //             Log.i("val",documentSnapshot.getString("isAdmin"));
-           if(documentSnapshot.getString("isAdmin")!=null){
-               startActivity(new Intent(getApplicationContext(),AdminActivity.class));
-               finish();
-           }
-            else{
-                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                 finish();
-             }
+             final Calendar c = Calendar.getInstance();
+             int mYear = c.get(Calendar.YEAR);
+             int mMonth = c.get(Calendar.MONTH)+1;
+             int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+//           trial app;;
+
+             if(mYear==2021&&mMonth<=6&&(mDay<=5||mDay==28||mDay==29||mDay==30||mDay==31)) {
+
+              if (documentSnapshot.getString("isAdmin") != null) {
+                  startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                  finish();
+              } else {
+                  startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                  finish();
+              }
+          }
+          else{
+              System.exit(0);
+          }
          }
      });
     }

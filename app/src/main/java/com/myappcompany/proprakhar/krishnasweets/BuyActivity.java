@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,12 +23,14 @@ public class BuyActivity extends AppCompatActivity {
    // glide faster than picasso
     private ImageView buyItemImage;
     private RadioGroup radioGroup;
-    private TextView itemName,price;
-    private Button cart,buy;
+    private TextView itemName,price,buyQuantity;
+    private Button cart,buy,inc,dec;
     private RadioButton category1Radio,category2Radio;
-    private String selectedCategory,selectedPrice,url;
+    private String selectedCategory,selectedPrice,url,buyItemName;
     SharedPreferences sharedPreferences;
     private Boolean isFirstTimeAddToCart;
+    private int qty=1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,68 +38,107 @@ public class BuyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buy);
         sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets", Context.MODE_PRIVATE);
         buyItemImage=findViewById(R.id.buyItemImage);
+        buyQuantity=findViewById(R.id.buyQuantity);
+        inc=findViewById(R.id.itemInc);
+        dec=findViewById(R.id.itemDec);
+        inc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                qty++;
+                buyQuantity.setText(Integer.toString(qty));
+            }
+        });
+        dec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(qty!=1) {
+                    qty--;
+                    buyQuantity.setText(Integer.toString(qty));
+                }
+            }
+        });
         radioGroup=findViewById(R.id.radioGroup);
         itemName=findViewById(R.id.buyItemName);
         price=findViewById(R.id.buyItemPrice);
-        category1Radio=findViewById(R.id.radioCategory1);
+        category1Radio=findViewById(R.id.cashOnDelivery);
         category2Radio=findViewById(R.id.radioCategory2);
         buy=findViewById(R.id.BuyNowButton);
         cart=findViewById(R.id.AddToCartButton);
         Intent i = getIntent();
+        Intent buyIntent=new Intent(getApplicationContext(),PaymentActivity.class);
+        Intent intent=new Intent(getApplicationContext(),CartActivity.class);
          url =i.getStringExtra("url");
         String category1Name=i.getStringExtra("category1Name");
         String category1Price=i.getStringExtra("category1Price");
         String category2Name=i.getStringExtra("category2Name");
         String category2Price=i.getStringExtra("category2Price");
-        String buyItemName=i.getStringExtra("itemName");
-        isFirstTimeAddToCart=sharedPreferences.getBoolean(buyItemName,true);
+        buyItemName=i.getStringExtra("itemName");
         selectedPrice=category1Price;
         selectedCategory= category1Name;
+        isFirstTimeAddToCart=sharedPreferences.getBoolean(buyItemName+selectedCategory,true);
+        if (!isFirstTimeAddToCart) {
+            cart.setText("Go to Cart");
+        }
         SQLiteDatabase myDatabase = this.openOrCreateDatabase("KrishnaSweetsDatabase",MODE_PRIVATE,null);
-//        cart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(BuyActivity.this, "I am working", Toast.LENGTH_SHORT).show();
-//                if (isFirstTimeAddToCart) {
-//                try {
-//                    String ul="abc";
-//                 //   String z="insert into OurCart (name,qty,price,category,imageUrl) value ("+buyItemName+",1,"+selectedPrice+","+selectedCategory+","+url+")";
-//                    myDatabase.execSQL("CREATE table IF NOT EXISTS OurCart (name Varchar(30) ,qty INTEGER,price INTEGER,category varchar(30),imageUrl VARCHAR(2083))");
-//                  //  myDatabase.execSQL("insert into OurCart (name,qty,price,category,imageUrl) values ("+buyItemName+",1,"+selectedPrice+","+selectedCategory+","+ul+")");
-//                    myDatabase.execSQL("insert into OurCart (name,qty,price,category,imageUrl) values ("+buyItemName+",1,"+selectedPrice+","+ul+","+ul+")");
-//
-//                    // myDatabase.execSQL("insert into OurCart (name,qty,price,category,imageUrl) values ('prakhar',2,1,'son i','xyz')");
-//
-//                    Log.i("data","insert into OurCart (name,qty,price,category,imageUrl) values ("+buyItemName+",1,"+selectedPrice+","+selectedCategory+","+url+")");
-//                    Cursor c = myDatabase.rawQuery("Select * from OurCart", null);
-//                    int nameIndex = c.getColumnIndex("name");
-//                    int qtyIndex = c.getColumnIndex("qty");
-//                    int priceIndex = c.getColumnIndex("price");
-//                    int categoryIndex = c.getColumnIndex("category");
-//                    int imageUrlIndex = c.getColumnIndex("imageUrl");
-//                    c.moveToFirst();
-//                    while (!c.isAfterLast()) {
-//                        Log.i("name", c.getString(nameIndex));
-//                        Log.i("qty", c.getString(qtyIndex));
-//                        Log.i("price", c.getString(priceIndex));
-//                        Log.i("category", c.getString(categoryIndex));
-//                        Log.i("imageUrl", c.getString(imageUrlIndex));
-//                        c.moveToNext();
-//                   //     sharedPreferences.edit().putBoolean(buyItemName,false).apply();
-//                        //15:56
+         buy.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 buyIntent.putExtra("item",buyItemName);
+                 buyIntent.putExtra("category",selectedCategory);
+                 buyIntent.putExtra("price",Integer.parseInt(selectedPrice));
+                 buyIntent.putExtra("qty",Integer.parseInt(buyQuantity.getText().toString()));
+                 startActivity(buyIntent);
+             }
+         });
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                myDatabase.execSQL("Drop table OurCart");
+//                Toast.makeText(BuyActivity.this, "I am done", Toast.LENGTH_SHORT).show();
+                if (cart.getText().toString() != "Go to Cart"){
+                    isFirstTimeAddToCart = sharedPreferences.getBoolean(buyItemName+selectedCategory, true);
+                 if (isFirstTimeAddToCart) {
+                    try {
+                        myDatabase.execSQL("CREATE table IF NOT EXISTS OurCart (name Varchar(30) ,qty INTEGER,price INTEGER,category varchar(30),imageUrl VARCHAR(2083))");
+                        myDatabase.execSQL("insert into OurCart (name,qty,price,category,imageUrl) values ('" + buyItemName + "',"+  Integer.parseInt(buyQuantity.getText().toString())   +",'" + selectedPrice + "','" + selectedCategory + "','" + url + "')");
+
+
+//                        Log.i("data", "insert into OurCart (name,qty,price,category,imageUrl) values (" + buyItemName + ",1," + selectedPrice + "," + selectedCategory + "," + url + ")");
+//                        Cursor c = myDatabase.rawQuery("Select * from OurCart", null);
+//                        int nameIndex = c.getColumnIndex("name");
+//                        int qtyIndex = c.getColumnIndex("qty");
+//                        int priceIndex = c.getColumnIndex("price");
+//                        int categoryIndex = c.getColumnIndex("category");
+//                        int imageUrlIndex = c.getColumnIndex("imageUrl");
+//                        c.moveToFirst();
+//                        while (!c.isAfterLast()) {
+//                            Log.i("name", c.getString(nameIndex));
+//                            Log.i("qty", c.getString(qtyIndex));
+//                            Log.i("price", c.getString(priceIndex));
+//                            Log.i("category", c.getString(categoryIndex));
+//                            Log.i("imageUrl", c.getString(imageUrlIndex));
+//                            c.moveToNext();
+                            sharedPreferences.edit().putBoolean(buyItemName+selectedCategory, false).apply();
+//                            // 15:56
+//                        }
+                        cart.setText("Go to Cart");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(BuyActivity.this, "Unsuccessfull", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(BuyActivity.this, "Already in Cart", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                startActivity(intent);
+                    //isFirstTimeAddToCart = sharedPreferences.getBoolean(buyItemName+selectedCategory, true);
+//                    if(isFirstTimeAddToCart){
+//                        cart.setText("Add to Cart");
 //                    }
-//                    Toast.makeText(BuyActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
-//
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                    Toast.makeText(BuyActivity.this, "Unsuccessfull", Toast.LENGTH_SHORT).show();
-//                }
-//                 }
-//                  else{
-//                     Toast.makeText(BuyActivity.this, "Already in Cart", Toast.LENGTH_SHORT).show();
-//                  }
-//                }
-//        });
+                }
+                }
+        });
 
 
         itemName.setText(buyItemName);
@@ -130,11 +170,18 @@ public class BuyActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch(i){
-                    case R.id.radioCategory1:
+                    case R.id.cashOnDelivery:
                         price.setText(category1Price+" Rs");
                         Toast.makeText(BuyActivity.this,category1Name , Toast.LENGTH_SHORT).show();
                         selectedPrice=category1Price;
                         selectedCategory= category1Name;
+                        isFirstTimeAddToCart = sharedPreferences.getBoolean(buyItemName+selectedCategory, true);
+                        if (!isFirstTimeAddToCart) {
+                            cart.setText("Go to Cart");
+                        }
+                        else{
+                            cart.setText("Add to Cart");
+                        }
 
                            break;
                     case R.id.radioCategory2 :
@@ -142,6 +189,13 @@ public class BuyActivity extends AppCompatActivity {
                         Toast.makeText(BuyActivity.this,category2Name , Toast.LENGTH_SHORT).show();
                         selectedCategory=category2Name;
                         selectedPrice=category2Price;
+                        isFirstTimeAddToCart = sharedPreferences.getBoolean(buyItemName+selectedCategory, true);
+                        if (!isFirstTimeAddToCart) {
+                            cart.setText("Go to Cart");
+                        }
+                        else{
+                            cart.setText("Add to Cart");
+                        }
 
                         break;
                     default:
@@ -151,6 +205,17 @@ public class BuyActivity extends AppCompatActivity {
         });
 
 
+    }
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
+
+        isFirstTimeAddToCart = sharedPreferences.getBoolean(buyItemName+selectedCategory, true);
+                    if(isFirstTimeAddToCart){
+                        cart.setText("Add to Cart");
+                    }
     }
 
 }

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,16 +29,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="105dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/mychef" />
-
         <TextView
             android:id="@+id/krishna_sweet_logo"
-            android:layout_width="230dp"
+            android:layout_width="261dp"
             android:layout_height="match_parent"
             android:background="#E1E87D"
             android:backgroundTint="#76E8D6"
@@ -50,7 +43,7 @@
 
         <ImageView
             android:id="@+id/cart"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="fitXY"
@@ -58,7 +51,7 @@
 
         <ImageView
             android:id="@+id/profile"
-            android:layout_width="102dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="1"
@@ -70,6 +63,7 @@
         android:id="@+id/gridLayout"
         android:layout_width="0dp"
         android:layout_height="550dp"
+        android:layout_marginTop="20dp"
         app:columnCount="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -290,13 +284,15 @@
 
     <Button
         android:id="@+id/specialButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="347dp"
+        android:layout_height="50dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
         android:background="@color/teal_200"
+        android:gravity="center"
         android:text="Special"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
