@@ -13,48 +13,64 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/opening1" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
-        android:backgroundTint="#FFFCFC"
+        android:background="#76E8D6"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/balkrishn" />
+
         <TextView
             android:id="@+id/krishna_sweet_logo"
-            android:layout_width="261dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#E1E87D"
             android:backgroundTint="#76E8D6"
-            android:gravity="center"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center|left"
             android:text="Krishna Sweets"
             android:textColor="#FB0E76"
             android:textSize="30sp"
-            android:textStyle="bold|italic" />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/cart"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/cart1" />
 
         <ImageView
             android:id="@+id/profile"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
+            android:background="#76E8D6"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/mychef" />
 
     </LinearLayout>
@@ -62,20 +78,20 @@
     <androidx.gridlayout.widget.GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="0dp"
-        android:layout_height="550dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="329dp"
         app:columnCount="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:rowCount="7">
 
         <Button
             android:id="@+id/Pasta"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
+            android:fontFamily="sans-serif-medium"
             android:text="Pasta"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -88,7 +104,7 @@
         <Button
             android:id="@+id/Rice"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Fried Rice"
@@ -103,7 +119,7 @@
         <Button
             android:id="@+id/Chinese"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Chinese"
@@ -118,7 +134,7 @@
         <Button
             android:id="@+id/Chaumin"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Noodles"
@@ -133,7 +149,7 @@
         <Button
             android:id="@+id/Burger"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Burger"
@@ -148,7 +164,7 @@
         <Button
             android:id="@+id/Pav_Baji"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Pav Baji"
@@ -163,7 +179,7 @@
         <Button
             android:id="@+id/Ice_Cream"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Ice Cream"
@@ -178,7 +194,7 @@
         <Button
             android:id="@+id/Dhosa"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Dhosa"
@@ -193,7 +209,7 @@
         <Button
             android:id="@+id/Soup"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Soup"
@@ -208,7 +224,7 @@
         <Button
             android:id="@+id/Cold_Drink"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Cold drink"
@@ -223,7 +239,7 @@
         <Button
             android:id="@+id/Bakery"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Bakery"
@@ -238,7 +254,7 @@
         <Button
             android:id="@+id/Nasta"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Nasta"
@@ -253,7 +269,7 @@
         <Button
             android:id="@+id/Sweets"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:text="Sweets"
@@ -268,7 +284,7 @@
         <Button
             android:id="@+id/Pizza"
             android:layout_width="24dp"
-            android:layout_height="28dp"
+            android:layout_height="10dp"
             android:layout_margin="5dp"
             android:background="@drawable/rounded_corner"
             android:radius="30dp"
@@ -283,18 +299,87 @@
     </androidx.gridlayout.widget.GridLayout>
 
     <Button
-        android:id="@+id/specialButton"
-        android:layout_width="347dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"
-        android:background="@color/teal_200"
+        android:id="@+id/otherItems"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Special"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        android:text="Other Items"
+        android:textAllCaps="false"
+        android:textColor="#E83C3C"
+        android:textColorLink="#FFFFFF"
+        android:textSize="18sp"
+        android:background="@drawable/riunded_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="selima"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#FFEB3B"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="Order Items Now..."
+        android:textColor="#E40F65"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <Button
+        android:id="@+id/offers"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/riunded_button"
+        android:gravity="center"
+        android:text="Offers"
+        android:textAllCaps="false"
+        android:textColor="#E83C3C"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otherItems" />
+
+    <Button
+        android:id="@+id/aboutUs"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/riunded_button"
+        android:gravity="center"
+        android:text="About us"
+        android:textAllCaps="false"
+        android:textColor="#E83C3C"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/offers" />
+
+    <TextView
+        android:id="@+id/developer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="#FFEB3B"
+        android:gravity="center"
+        android:text="Prakhar Soni,CSE,Indian Institute Of Information Technology Surat"
+        android:textColor="#0B0A0A"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,34 +8,6 @@
     tools:context=".SignInActivity">
 
 
-    <ImageView
-        android:id="@+id/opening"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/openingperfect" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/opening" />
-
-
-
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -47,31 +19,48 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/chef"
+            android:id="@+id/krishna"
             android:layout_width="match_parent"
-            android:layout_height="364dp"
-            app:srcCompat="@drawable/mychef" />
+            android:layout_height="358dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/balkrishn" />
 
-        <TextView
-            android:id="@+id/krishna_sweets"
+        <ImageView
+            android:id="@+id/imageView4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Krishna Sweets"
-            android:textColor="#557BB5"
-            android:textSize="30sp"
-            android:textStyle="bold|italic" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="87dp" />
+            android:layout_height="103dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/logo" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:colorScheme="dark">
+
+        </com.google.android.gms.common.SignInButton>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/krishnasweets" />
+
 
     </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+
+        android:id="@+id/chefGif"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/loadingwait"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

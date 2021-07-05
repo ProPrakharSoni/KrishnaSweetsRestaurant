@@ -1,6 +1,7 @@
 package com.myappcompany.proprakhar.krishnasweets;
 
 import androidx.appcompat.app.AppCompatActivity;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,11 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 public class BuyActivity extends AppCompatActivity {
    // glide faster than picasso
     private ImageView buyItemImage;
+    ImageView cartImage,profile;
     private RadioGroup radioGroup;
+    FirebaseAuth mAuth;
     private TextView itemName,price,buyQuantity;
     private Button cart,buy,inc,dec;
     private RadioButton category1Radio,category2Radio;
@@ -36,6 +41,39 @@ public class BuyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy);
+        cartImage =findViewById(R.id.cart);
+        profile=findViewById(R.id.profile);
+        mAuth = FirebaseAuth.getInstance();
+        cartImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),CartActivity.class));
+            }
+        });
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // intent.putExtra("giveItem","");
+                //startActivity(intent);
+                startActivity(new Intent(getApplicationContext(),UserProfile.class));
+            }
+        });
+        Picasso.get()
+                .load(mAuth.getCurrentUser().getPhotoUrl())
+                //.placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+                .centerInside()
+                .fit()
+                .transform(new CropCircleTransformation())
+                .into(profile);
+        Picasso.get()
+                .load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV7VoOgaHUhoeKNRFDpyL1D__B72rfkIuFrA&usqp=CAU")
+                //.placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+                .centerInside()
+                .fit()
+                .transform(new CropCircleTransformation())
+                .into(cartImage);
         sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets", Context.MODE_PRIVATE);
         buyItemImage=findViewById(R.id.buyItemImage);
         buyQuantity=findViewById(R.id.buyQuantity);

@@ -83,7 +83,7 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
-        String[] itemCategories={"Pasta","FriedRice","Chinese","Noodles","Burger","PavBaji","IceCream","Dhhosa","Soup","ColdDrink","Bakery","Nasta","Sweets","Pizza"};
+        String[] itemCategories={"Pasta","FriedRice","Chinese","Noodles","Burger","PavBaji","IceCream","Dhhosa","Soup","ColdDrink","Bakery","Nasta","Sweets","Pizza","Other Items","Offers"};
         Arrays.sort(itemCategories);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,itemCategories);
         mItemSpinner.setAdapter(adapter);

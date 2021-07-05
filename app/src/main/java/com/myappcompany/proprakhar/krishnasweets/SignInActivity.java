@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,30 +39,18 @@ public class SignInActivity extends AppCompatActivity {
     GoogleSignInClient mSignInClient;
     private FirebaseAuth mAuth;
     ImageView chefImage;
-    ProgressBar mProgressBar;
-    TextView textView;
     FirebaseFirestore fStore;
     String fullName,email,uid;
     SharedPreferences sharedPreferences;
-    Boolean isFirstTime;
-    ImageView opening;
+    GifImageView loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        chefImage =findViewById(R.id.chef);
-        mProgressBar=findViewById(R.id.progressBar);
-        textView=findViewById(R.id.krishna_sweets);
-        opening=findViewById(R.id.opening);
-        sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets",Context.MODE_PRIVATE);
-        fStore=FirebaseFirestore.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mSignInClient =GoogleSignIn.getClient(this,gso);
-
+        chefImage =findViewById(R.id.krishna);
+        loading=findViewById(R.id.chefGif);
+      //  sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets",Context.MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
         findViewById(R.id.sign_in_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,20 +62,22 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//            finish();
-            chefImage.setVisibility(View.INVISIBLE);
-            //textView.setVisibility(View.INVISIBLE);
-            opening.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.VISIBLE);
             findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
-            checkUserAccessLevel(mAuth.getCurrentUser().getUid());
+            FirebaseUser user = mAuth.getCurrentUser();
+            fullName=user.getDisplayName();
+            uid=user.getUid();
+            email=user.getEmail();
+            checkUserAccessLevel();
         }
     }
     private void signIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mSignInClient =GoogleSignIn.getClient(this,gso);
         Intent signInIntent = mSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -113,33 +104,17 @@ public class SignInActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
-        chefImage.setVisibility(View.INVISIBLE);
-        textView.setVisibility(View.INVISIBLE);
-       mProgressBar.setVisibility(View.VISIBLE);
-
+        loading.setVisibility(View.VISIBLE);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             fullName=user.getDisplayName();
                             uid=user.getUid();
                             email=user.getEmail();
-                            isFirstTime=sharedPreferences.getBoolean("isFirstTime",true);
-                            if(isFirstTime) {
-                                DocumentReference df = fStore.collection("Users").document(user.getUid());
-                                //it does not store duplicate values // while this code runs many time;
-                                Map<String, Object> userInfo = new HashMap<>();
-                                userInfo.put("userEmail", email);
-                                df.set(userInfo);
-//                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-//                            finish();
-                            sharedPreferences.edit().putBoolean("isFirstTime",false).apply();
-                            }
-                            checkUserAccessLevel(user.getUid());
+                            checkUserAccessLevel();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
@@ -151,33 +126,13 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void checkUserAccessLevel(String uid){
-     DocumentReference df =fStore.collection("Users").document(uid);
-     df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-         @Override
-         public void onSuccess(DocumentSnapshot documentSnapshot) {
-//             Log.i("val",documentSnapshot.getString("isAdmin"));
-             final Calendar c = Calendar.getInstance();
-             int mYear = c.get(Calendar.YEAR);
-             int mMonth = c.get(Calendar.MONTH)+1;
-             int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-//           trial app;;
-
-             if(mYear==2021&&mMonth<=6&&(mDay<=5||mDay==28||mDay==29||mDay==30||mDay==31)) {
-
-              if (documentSnapshot.getString("isAdmin") != null) {
-                  startActivity(new Intent(getApplicationContext(), AdminActivity.class));
-                  finish();
-              } else {
-                  startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                  finish();
-              }
-          }
-          else{
-              System.exit(0);
-          }
-         }
-     });
+    private void checkUserAccessLevel(){
+     if(email.equals("krishnasweetftp@gmail.com")||email.equals("ashish.krishna2014@gmail.com")||email.equals("prakhar.amansoni@gmail.com")||email.equals("paritsolutions@gmail.com")){
+         startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+         finish();
+     }else{
+         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+         finish();
+     }
     }
 }

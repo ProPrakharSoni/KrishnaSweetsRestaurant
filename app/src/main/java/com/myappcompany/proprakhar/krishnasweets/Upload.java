@@ -1,10 +1,12 @@
 package com.myappcompany.proprakhar.krishnasweets;
 
+import com.google.firebase.database.Exclude;
+
 public class Upload {
 
     private  String mItemName,mCategory1,mCategory2,mImageUrl;
     private String mPriceCategory1,mPriceCategory2;
-
+    private String mKey;
 
     public Upload(){
         //Empty constructor needed.
@@ -56,5 +58,12 @@ public class Upload {
     public void setcategory2Price(String category2Price){
         mPriceCategory2=category2Price;
     }
-
+    @Exclude
+    public String getKey(){
+        return mKey;
+    }
+    @Exclude
+    public void setKey(String key){
+        mKey=key;
+    }
 }

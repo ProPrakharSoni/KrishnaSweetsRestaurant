@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFBFB"
-    tools:context=".ItemActivity">
+    android:scrollbarThumbVertical="@color/purple_700"
+    android:scrollbars="vertical"
+    android:background="#FFFFFF"
+    tools:context=".AboutAdmin">
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
@@ -20,7 +23,7 @@
         <ImageView
             android:id="@+id/logo"
             android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/balkrishn" />
@@ -62,28 +65,59 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemRecyclerView"
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:scaleType="fitXY"
+                android:src="@drawable/krishnasweets" />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="#FFFFFF"
+                android:scaleType="centerCrop"
+                android:src="@drawable/a" />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="#FFFFFF"
+                android:scaleType="centerCrop"
+                android:src="@drawable/b" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scrollbars="vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/textbackground"
+        android:fontFamily="@font/aclonica"
         android:scrollbarThumbVertical="@color/purple_700"
+        android:scrollbars="vertical"
+        android:textColor="#000701"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-
-    <pl.droidsonroids.gif.GifImageView
-
-        android:id="@+id/chefGif"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/chef"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

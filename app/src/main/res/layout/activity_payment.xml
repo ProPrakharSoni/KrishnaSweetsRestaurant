@@ -10,14 +10,13 @@
     <TextView
         android:id="@+id/summary"
         android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_height="50dp"
+        android:background="#07E2FF"
         android:gravity="center"
         android:text="Order Summary"
-        android:textColor="#213DF3"
-        android:textSize="30sp"
-        android:textStyle="bold|italic"
+        android:textColor="#EA0C0C"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,12 +26,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="381dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.97"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridView">
+        app:layout_constraintTop_toBottomOf="@+id/summary">
 
         <RadioButton
             android:id="@+id/cashOnDelivery"
@@ -60,20 +59,22 @@
             android:visibility="invisible" />
     </RadioGroup>
 
-    <GridView
-        android:id="@+id/gridView"
+    <TextView
+        android:id="@+id/orderSummary"
         android:layout_width="0dp"
-        android:layout_height="366dp"
-        android:background="@color/common_google_signin_btn_text_dark_focused"
-        android:clipToPadding="false"
-        android:numColumns="5"
-        android:verticalSpacing="5dp"
+        android:layout_height="0dp"
+        android:background="#A7B3F3"
+        android:fontFamily="serif"
+        android:scrollbarThumbVertical="@color/purple_700"
+        android:scrollbars="vertical"
+        android:text="TextView"
+        android:textColor="#0C0C0C"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/summary">
-
-    </GridView>
+        app:layout_constraintTop_toBottomOf="@+id/summary" />
 
     <Button
         android:id="@+id/placeOrder"
@@ -90,32 +91,71 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="5dp"
-        android:orientation="horizontal"
+        android:layout_height="157dp"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/placeOrder">
 
-        <ImageView
-            android:id="@+id/callButton"
-            android:layout_width="57dp"
-            android:layout_height="49dp"
-            app:srcCompat="@drawable/calling" />
-
-        <TextView
-            android:id="@+id/callText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="15dp"
-            android:text="Call for Confirming your Order"
-            android:textColor="#3A2F78"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/callButton"
+                android:layout_width="57dp"
+                android:layout_height="49dp"
+                app:srcCompat="@drawable/asd" />
+
+            <TextView
+                android:id="@+id/callText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="15dp"
+                android:text="Call for Confirming your Order Number -1"
+                android:textColor="#3A2F78"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/callButton2"
+                android:layout_width="57dp"
+                android:layout_height="49dp"
+                app:srcCompat="@drawable/callingx" />
+
+            <TextView
+                android:id="@+id/callText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="15dp"
+                android:text="Call for Confirming your Order Number -2"
+                android:textColor="#3A2F78"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
