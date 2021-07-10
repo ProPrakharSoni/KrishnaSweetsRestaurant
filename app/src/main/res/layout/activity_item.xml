@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FDFBFB"
     tools:context=".ItemActivity">
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
@@ -66,8 +67,8 @@
         android:id="@+id/itemRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scrollbars="vertical"
         android:scrollbarThumbVertical="@color/purple_700"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,5 +86,21 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/itemCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:text="No Item Here"
+        android:textColor="#0B2CE3"
+        android:textSize="24sp"
+        android:textStyle="bold|italic"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/itemRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,15 +29,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
     Button buy;
     TextView totalMoney;
-    GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
-    RecyclerView.LayoutManager layoutManager;
     private List<CartItem> mCartItem;
     RecyclerView mRecyclerView;
     CartAdapter mAdapter;
@@ -54,7 +57,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
         cartEmptyPic=findViewById(R.id.cartEmptyPic);
         sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets", Context.MODE_PRIVATE);
        myDatabase = this.openOrCreateDatabase("KrishnaSweetsDatabase",MODE_PRIVATE,null);
-       try {
+        try {
            Cursor c = myDatabase.rawQuery("Select * from OurCart", null);
            int nameIndex = c.getColumnIndex("name");
            int qtyIndex = c.getColumnIndex("qty");
@@ -64,16 +67,9 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
            c.moveToFirst();
            while (!c.isAfterLast()) {
                CartItem cartItem = new CartItem(c.getString(nameIndex), c.getString(imageUrlIndex), c.getString(categoryIndex), c.getInt(qtyIndex), c.getInt(priceIndex));
-//            Log.i("name", c.getString(nameIndex));
-//            Log.i("qty", c.getString(qtyIndex));
-//            Log.i("price", c.getString(priceIndex));
-//            Log.i("category", c.getString(categoryIndex));
-//            Log.i("imageUrl", c.getString(imageUrlIndex));
                add=c.getInt(qtyIndex)*c.getInt(priceIndex);
                totalPrice=totalPrice+add;
                c.moveToNext();
-               // sharedPreferences.edit().putBoolean(buyItemName+selectedCategory, false).apply();
-               // 15:56
                mCartItem.add(cartItem);
            }
            totalMoney.setText(Integer.toString(totalPrice));
@@ -90,18 +86,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
                    goToPayment();
                    }
            });
-
-           GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                   .requestEmail()
-                   .build();
-           mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//        logoutUser.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//               // Toast.makeText(CartActivity.this, "I am working", Toast.LENGTH_SHORT).show();
-//                     signOut();
-//            }
-//        });
        }catch(Exception e){
            e.printStackTrace();
        }
@@ -110,31 +94,11 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
         }
     }
 
-    private void goToPayment() {
+    private void goToPayment(){
         if(totalMoney.getText().toString().equals("0")){
             Toast.makeText(CartActivity.this, "Cart is empty", Toast.LENGTH_SHORT).show();
         }else {
-           // Toast.makeText(CartActivity.this, totalMoney.getText().toString(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), PaymentActivity.class));
-        }
-    }
-
-    private void signOut() {
-        // Firebase sign out
-        try {
-            mAuth.signOut();
-            // Google sign out
-            mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                    new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            finishAffinity();
-                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
-                            finish();
-                        }
-                    });
-        }catch(Exception e){
-            e.printStackTrace();
         }
     }
 

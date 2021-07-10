@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,6 +42,8 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
     FirebaseAuth mAuth;
     RecyclerView mRecyclerView;
     ItemAdapter mAdapter;
+    private int sizelist;
+    private TextView itemCheck;
     RecyclerView.LayoutManager layoutManager;
     private List<Upload> mUploads;
     private DatabaseReference mDatabaseRef;
@@ -57,6 +60,7 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         chefGif=findViewById(R.id.chefGif);
+        itemCheck=findViewById(R.id.itemCheck);
         mRecyclerView=findViewById(R.id.itemRecyclerView);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -120,16 +124,23 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
 //                        Log.i("Url",Url);
 //                        Log.i("UrlMethod","Executes");
                         upload.setKey(postSanpshot.getKey());
-                        Log.i("Uploading",upload.getName());
-                       Log.i("UploadingPrice",upload.getCategory1Price());
+//                        Log.i("Uploading",upload.getName());
+//                       Log.i("UploadingPrice",upload.getCategory1Price());
                         mUploads.add(upload);
                     }
+
 //                    mAdapter = new ItemAdapter(ItemActivity.this, mUploads,ItemActivity.this);
 //                    mRecyclerView.setAdapter(mAdapter);
 
                     mAdapter.notifyDataSetChanged();
 
                     chefGif.setVisibility(View.INVISIBLE);
+                    sizelist=mUploads.size();
+                    if(sizelist==0){
+                        itemCheck.setVisibility(View.VISIBLE);
+                    }
+                  //  Toast.makeText(getApplicationContext(), Integer.toString(sizelist), Toast.LENGTH_SHORT).show();
+
                     //i think to save bitmap in an array.
                 }
 

@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class PaymentActivity extends AppCompatActivity {
         myDatabase = this.openOrCreateDatabase("KrishnaSweetsDatabase", MODE_PRIVATE, null);
         sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets", Context.MODE_PRIVATE);
         addressSave=(!(sharedPreferences.getBoolean("newUser",true)));
-        shopNumber="918960549442";
+        shopNumber="919554137222";
         callText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,8 +85,8 @@ public class PaymentActivity extends AppCompatActivity {
         cash.setChecked(true);
         intent=new Intent(Intent.ACTION_CALL);
         intent2=new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:8960549442"));
-        intent2.setData(Uri.parse("tel:8960549442"));
+        intent.setData(Uri.parse("tel:9554137222"));
+        intent2.setData(Uri.parse("tel:9076607113"));
         itemSummary="";
         call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +178,7 @@ public class PaymentActivity extends AppCompatActivity {
                         Toast.makeText(PaymentActivity.this, "Please Install WhatsAPP", Toast.LENGTH_SHORT).show();
                     }
                     }else{
-                        Toast.makeText(PaymentActivity.this, "Please fill your address", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PaymentActivity.this, "Please fill your details", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(),UserProfile.class));
                         addressSave=(!(sharedPreferences.getBoolean("newUser",true)));
                     }
@@ -209,7 +210,7 @@ public class PaymentActivity extends AppCompatActivity {
             }
             message=message.concat("\n*Cash On Delivery* ->  *"+Integer.toString(totalPrice)+"* Rs");
         add++;
-        }catch (Exception e){
+        }catch(Exception e){
             //Toast.makeText(this, "catch", Toast.LENGTH_SHORT).show();
             //newUser=true;
             add=1;
@@ -251,12 +252,13 @@ public class PaymentActivity extends AppCompatActivity {
     @Override
     public void onRestart() {
         super.onRestart();
+        addressSave = (!(sharedPreferences.getBoolean("newUser", true)));
         if(add==1) {
             //When BACK BUTTON is pressed, the activity on the stack is restarted
             //Do what you want on the refresh procedure here
-            addressSave = (!(sharedPreferences.getBoolean("newUser", true)));
+           // addressSave = (!(sharedPreferences.getBoolean("newUser", true)));
             userData();
-            add++;
+           // add++;
         }
        // Toast.makeText(this, "Im am working Hello", Toast.LENGTH_SHORT).show();
     }

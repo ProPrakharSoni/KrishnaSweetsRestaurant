@@ -79,10 +79,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="80dp"
-        android:scaleType="fitXY"
+        android:layout_marginBottom="30dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -94,7 +94,9 @@
         android:id="@+id/linearLayout6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         android:background="#F4EEB5"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -108,25 +110,15 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20sp"
-                android:text="Item Name:"
-                android:textColor="#130101"
-                android:textSize="24sp"
-                android:textStyle="bold|italic" />
-
-            <TextView
                 android:id="@+id/buyItemName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5sp"
+                android:layout_marginLeft="20sp"
                 android:layout_marginBottom="5sp"
                 android:text="Name"
                 android:textColor="#0813E6"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -148,7 +140,7 @@
 
             <TextView
                 android:id="@+id/buyItemPrice"
-                android:layout_width="104dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:text="Price"
@@ -159,14 +151,15 @@
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="right"
                 android:text="Qty:"
                 android:textColor="#C50707"
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="138dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
@@ -176,7 +169,8 @@
                     android:id="@+id/itemInc"
                     android:layout_width="match_parent"
                     android:layout_height="22dp"
-                    android:background="#03A9F4"
+                    android:background="#94D697"
+                    android:gravity="center"
                     android:text="+"
                     android:textColor="#0C0C0C"
                     android:textSize="20sp" />
@@ -193,7 +187,7 @@
                     android:id="@+id/itemDec"
                     android:layout_width="match_parent"
                     android:layout_height="22dp"
-                    android:background="#03A9F4"
+                    android:background="#94D697"
                     android:text="-"
                     android:textColor="#0C0C0C"
                     android:textSize="20sp" />
