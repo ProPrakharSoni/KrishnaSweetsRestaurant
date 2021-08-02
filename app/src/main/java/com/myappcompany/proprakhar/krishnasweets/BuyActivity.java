@@ -25,14 +25,14 @@ import com.squareup.picasso.Picasso;
 public class BuyActivity extends AppCompatActivity {
    // glide faster than picasso
     private ImageView buyItemImage;
-    ImageView cartImage,profile;
+    private ImageView cartImage,profile;
     private RadioGroup radioGroup;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
     private TextView itemName,price,buyQuantity;
     private Button cart,buy,inc,dec;
     private RadioButton category1Radio,category2Radio;
     private String selectedCategory,selectedPrice,url,buyItemName;
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
     private Boolean isFirstTimeAddToCart;
     private int qty=1;
 
@@ -180,7 +180,7 @@ public class BuyActivity extends AppCompatActivity {
 
 
         itemName.setText(buyItemName);
-        price.setText(category1Price+" Rs");
+        price.setText("Rs."+category1Price);
         category1Radio.setText(category1Name);
         if(category2Name.equals("")) {
         category2Radio.setVisibility(View.INVISIBLE);
@@ -209,7 +209,7 @@ public class BuyActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch(i){
                     case R.id.cashOnDelivery:
-                        price.setText(category1Price+" Rs");
+                        price.setText("Rs."+category1Price);
                         Toast.makeText(BuyActivity.this,category1Name , Toast.LENGTH_SHORT).show();
                         selectedPrice=category1Price;
                         selectedCategory= category1Name;
@@ -223,7 +223,7 @@ public class BuyActivity extends AppCompatActivity {
 
                            break;
                     case R.id.radioCategory2 :
-                        price.setText(category2Price+" Rs");
+                        price.setText("Rs."+category2Price);
                         Toast.makeText(BuyActivity.this,category2Name , Toast.LENGTH_SHORT).show();
                         selectedCategory=category2Name;
                         selectedPrice=category2Price;

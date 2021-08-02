@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "962682212903-k3olfoavboia7vpdhnvdk2p373r65u08.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myappcompany.proprakhar.krishnasweets",
+            "certificate_hash": "8ee09ce9727fd3674b230f56eb51685fa344d2f9"
+          }
+        },
+        {
+          "client_id": "962682212903-shti6nvnhes6bdlg4t8fhku315r9gqu7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myappcompany.proprakhar.krishnasweets",
+            "certificate_hash": "ca275cfd33c5147009f67622b7ae445422da8888"
+          }
+        },
+        {
           "client_id": "962682212903-0o314q51ev28i2rodui7ffmb3gbgf5eu.apps.googleusercontent.com",
           "client_type": 3
         }

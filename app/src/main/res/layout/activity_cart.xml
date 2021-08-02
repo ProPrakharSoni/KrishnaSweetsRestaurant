@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5F5"
+    android:background="#FFFFFF"
     tools:context=".CartActivity">
 
 
@@ -38,9 +38,8 @@
         android:layout_width="0dp"
         android:layout_height="62dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="42dp"
         android:layout_marginBottom="13dp"
-        android:background="#FAF5F5"
+        android:background="#FFFFFF"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buy"
@@ -51,7 +50,6 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
-            android:layout_marginStart="10dp"
             android:layout_marginBottom="41dp"
             android:text="Total Price :"
             android:textColor="#171616"
@@ -63,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="0"
+            android:text="Rs.0"
             android:textColor="#F40707"
             android:textSize="24sp" />
     </LinearLayout>

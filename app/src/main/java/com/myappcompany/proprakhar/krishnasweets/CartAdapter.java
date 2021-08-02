@@ -21,7 +21,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     private Context mCartContext;
     private List<CartItem> mCartItems;
-    SQLiteDatabase myDatabase;
+    private SQLiteDatabase myDatabase;
     private RecyclerViewClickInterface recyclerViewClickInterface;
     public CartAdapter(Context context,List<CartItem> items,RecyclerViewClickInterface recyclerViewClickInterface1){
         mCartContext=context;
@@ -40,7 +40,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartItem cartCurrent = mCartItems.get(position);
         holder.mItemName.setText(cartCurrent.getmItemName());
-        holder.mPrice.setText("Price: "+Integer.toString(cartCurrent.getmPrice())+" ");
+        holder.mPrice.setText("Price: Rs."+Integer.toString(cartCurrent.getmPrice()));
         holder.mCategory.setText("Category: "+cartCurrent.getmCategory());
         holder.mQty.setText(Integer.toString(cartCurrent.getmQty()));
         Glide.with(mCartContext)

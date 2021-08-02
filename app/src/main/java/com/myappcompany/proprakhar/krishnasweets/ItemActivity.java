@@ -38,21 +38,21 @@ import java.util.List;
 public class ItemActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
     // Here data shown=>
-    ImageView cart,profile;
-    FirebaseAuth mAuth;
-    RecyclerView mRecyclerView;
-    ItemAdapter mAdapter;
+    private ImageView cart,profile;
+    private FirebaseAuth mAuth;
+    private RecyclerView mRecyclerView;
+    private ItemAdapter mAdapter;
     private int sizelist;
     private TextView itemCheck;
-    RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.LayoutManager layoutManager;
     private List<Upload> mUploads;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage  mStorage;
-    String email;
+    private String email;
     private ValueEventListener mDBListener;
-    Intent intent;
-    GifImageView chefGif;
-    FirebaseUser user ;
+    private Intent intent;
+    private GifImageView chefGif;
+    private FirebaseUser user ;
 
 
     @Override

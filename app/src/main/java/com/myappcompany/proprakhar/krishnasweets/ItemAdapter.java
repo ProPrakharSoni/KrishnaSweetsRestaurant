@@ -38,7 +38,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Upload uploadCurrent = mUploads.get(position);
-        holder.mPrice.setText(uploadCurrent.getCategory1Price()+" Rs");
+        holder.mPrice.setText("Rs."+uploadCurrent.getCategory1Price());
         holder.mItemName.setText(uploadCurrent.getName());
 //        Picasso.get()
 //                .load(uploadCurrent.getImageUrl())

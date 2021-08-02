@@ -45,20 +45,20 @@ import java.util.Arrays;
 public class AdminActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST=1;
-    Button logout,gallery,mUploadButton,userView;
-    GoogleSignInClient mGoogleSignInClient;
-    FirebaseAuth mAuth;
-    Spinner mItemSpinner;
-    ProgressBar mProgressBarImageUploading,checkUploadProgress;
+    private Button logout,gallery,mUploadButton,userView;
+    private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseAuth mAuth;
+    private Spinner mItemSpinner;
+    private ProgressBar mProgressBarImageUploading,checkUploadProgress;
     private Uri mImageUri;
-    Bitmap bitmap;
+    private Bitmap bitmap;
     private ImageView mImageView;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private String itemName,category1,category2;
     private int priceCategory1,priceCategory2;
     private UploadTask uploadTask2;
-    EditText itemNameEditText,category1EditText,category2EditText,priceCategory1EditText,priceCategory2EditText;
+    private EditText itemNameEditText,category1EditText,category2EditText,priceCategory1EditText,priceCategory2EditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

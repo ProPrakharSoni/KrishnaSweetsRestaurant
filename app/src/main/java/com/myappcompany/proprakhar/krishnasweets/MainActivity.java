@@ -29,19 +29,28 @@ public class MainActivity extends AppCompatActivity {
 //    Button logout,mData;
 //    GoogleSignInClient mGoogleSignInClient;
 
-    FirebaseAuth mAuth;
-    ImageView cart,profile;
-    Button Pasta,Fried_Rice,Chinese,Chaumin,Burger,PavBaji,IceCream,Dhosa,Soup,ColdDrink,Bakery,Nasta,Sweets,Pizza,otherItems,offer,aboutUs;
-    Intent intent;
+    private FirebaseAuth mAuth;
+    private ImageView cart,profile;
+    private Button Pasta,Fried_Rice,Chinese,Chaumin,Burger,PavBaji,IceCream,Dhosa,Soup,ColdDrink,Bakery,Nasta,Sweets,Pizza,otherItems,offer,aboutUs;
+    private Intent intent;
     private DatabaseReference mDatabaseRef;
-    private TextView developer;
+    private TextView developer,txtMarquee;
+    private String name,movingText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        txtMarquee =findViewById(R.id.marqueeText);
+
+        // Now we will call setSelected() method
+        // and pass boolean value as true
+        txtMarquee.setSelected(true);
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("");// In my experience i get that if I make once connection here (I don't use this variable here) then It takes less time to get data from firebase again when this method is used again;
         mAuth = FirebaseAuth.getInstance();
+        name=mAuth.getCurrentUser().getDisplayName();
+        txtMarquee.setText("Hi "+name+" ,Welcome to Krishna Sweets App, Home delivery available above Rs.200 from 11AM to 9PM!!");
         aboutUs=findViewById(R.id.aboutUs);
         aboutUs.setOnClickListener(new View.OnClickListener() {
             @Override

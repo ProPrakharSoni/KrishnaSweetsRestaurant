@@ -36,13 +36,13 @@ import java.util.Map;
 public class SignInActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN =123 ;
-    GoogleSignInClient mSignInClient;
+    private GoogleSignInClient mSignInClient;
     private FirebaseAuth mAuth;
-    ImageView chefImage;
-    FirebaseFirestore fStore;
-    String fullName,email,uid;
-    SharedPreferences sharedPreferences;
-    GifImageView loading;
+    private ImageView chefImage;
+    private FirebaseFirestore fStore;
+    private String fullName,email,uid;
+    private SharedPreferences sharedPreferences;
+    private GifImageView loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

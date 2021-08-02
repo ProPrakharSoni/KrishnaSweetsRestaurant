@@ -28,7 +28,7 @@ public class UserProfile extends AppCompatActivity {
     private ImageView profileImg;
     private FirebaseAuth mAuth;
     private Button logoutUser,saveProfile;
-    GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private EditText name,phone,address,pinCode;
     private Boolean newUser;
     private SharedPreferences sharedPreferences;
@@ -64,8 +64,8 @@ public class UserProfile extends AppCompatActivity {
                 boolean ch= check();
                 if(newUser&&ch) {
                     myDatabase.execSQL("Insert into UserProfile (name,phone,address,pinCode) values ('" + name.getText().toString() + "','" + phone.getText().toString() + "','" + address.getText().toString() + "'," + Integer.parseInt(pinCode.getText().toString()) + ")");
+                    sharedPreferences.edit().putBoolean("newUser",false).apply();
                     Toast.makeText(UserProfile.this, "Saved", Toast.LENGTH_SHORT).show();
-               sharedPreferences.edit().putBoolean("newUser",false).apply();
                 }else if(ch){
                     myDatabase.execSQL("DROP table UserProfile");
                     myDatabase.execSQL("CREATE table IF NOT EXISTS UserProfile (name Varchar(50) ,phone varchar(20),address varchar(200),pinCode BIGINT)");
@@ -115,17 +115,18 @@ public class UserProfile extends AppCompatActivity {
             name.setError("Empty");
         c++;
         }
-        if(phone.getText().toString().equals("")){
-            phone.setError("Empty");
-            c++;
+        if(phone.getText().toString().length()!=10){
+            phone.setError("Enter 10 digit number");
+            c++; //adding
         }
-        if(address.getText().toString().equals("")){
+        if(address.getText().toString().equals("")) {
             address.setError("Empty");
             c++;
-        } if(pinCode.getText().toString().equals("")){
-            pinCode.setError("Empty");
-                c++;
         }
+        if(pinCode.getText().toString().length()!=6){
+                pinCode.setError("Enter correct pincode");
+                c++;//adding
+            }
         if(c==0) {
             return true;
         }else{

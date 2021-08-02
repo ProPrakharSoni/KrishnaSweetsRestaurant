@@ -35,15 +35,15 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
-    Button buy;
-    TextView totalMoney;
-    FirebaseAuth mAuth;
+   private Button buy;
+   private TextView totalMoney;
+   private FirebaseAuth mAuth;
     private List<CartItem> mCartItem;
-    RecyclerView mRecyclerView;
-    CartAdapter mAdapter;
-    SQLiteDatabase myDatabase;
-    SharedPreferences sharedPreferences;
-    int totalPrice=0;
+   private RecyclerView mRecyclerView;
+    private CartAdapter mAdapter;
+    private SQLiteDatabase myDatabase;
+    private SharedPreferences sharedPreferences;
+    private int totalPrice=0;
     private ImageView cartEmptyPic;
 
     @Override
@@ -72,7 +72,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
                c.moveToNext();
                mCartItem.add(cartItem);
            }
-           totalMoney.setText(Integer.toString(totalPrice));
+           totalMoney.setText("Rs."+Integer.toString(totalPrice));
            buy = findViewById(R.id.buy);
            mAuth = FirebaseAuth.getInstance();
            mRecyclerView = findViewById(R.id.cartRecyclerView);
@@ -89,13 +89,13 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
        }catch(Exception e){
            e.printStackTrace();
        }
-        if(totalMoney.getText().toString().equals("0")){
+        if(totalMoney.getText().toString().equals("Rs.0")){
             cartEmptyPic.setVisibility(View.VISIBLE);
         }
     }
 
     private void goToPayment(){
-        if(totalMoney.getText().toString().equals("0")){
+        if(totalMoney.getText().toString().equals("Rs.0")){
             Toast.makeText(CartActivity.this, "Cart is empty", Toast.LENGTH_SHORT).show();
         }else {
             startActivity(new Intent(getApplicationContext(), PaymentActivity.class));
@@ -130,11 +130,11 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
             int qty =mCartItem.get(position).getmQty();
             totalPrice=totalPrice-(qty*mCartItem.get(position).getmPrice());
             sharedPreferences.edit().putBoolean(deleteItemName+delCategory, true).apply();
-            totalMoney.setText(Integer.toString(totalPrice));
+            totalMoney.setText("Rs."+Integer.toString(totalPrice));
             myDatabase.execSQL("Delete from OurCart where name ='" + deleteItemName + "' AND  category = '"+delCategory + "' ");
             mCartItem.remove(position);
             mAdapter.notifyDataSetChanged();
-            if(totalMoney.getText().toString().equals("0")){
+            if(totalMoney.getText().toString().equals("Rs.0")){
                 cartEmptyPic.setVisibility(View.VISIBLE);
             }
         }catch(Exception e){
@@ -147,7 +147,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
         int qty =mCartItem.get(position).getmQty();
         totalPrice=totalPrice-(qty*mCartItem.get(position).getmPrice());
         totalPrice=totalPrice+(value*mCartItem.get(position).getmPrice());
-        totalMoney.setText(Integer.toString(totalPrice));
+        totalMoney.setText("Rs."+Integer.toString(totalPrice));
         myDatabase.execSQL("Update OurCart set qty = "+ value+" where name = '"+item +"' AND category ='"+cat+"' ");
         mCartItem.get(position).setmQty(value);
     }

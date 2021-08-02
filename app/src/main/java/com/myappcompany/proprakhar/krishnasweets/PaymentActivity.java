@@ -1,5 +1,6 @@
 package com.myappcompany.proprakhar.krishnasweets;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -7,13 +8,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -28,8 +32,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -45,6 +54,7 @@ public class PaymentActivity extends AppCompatActivity {
     private Boolean addressSave,isAppInstalled;
     private SharedPreferences sharedPreferences;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +66,33 @@ public class PaymentActivity extends AppCompatActivity {
         callText=findViewById(R.id.callText);
         callText2=findViewById(R.id.callText2);
         summaryText=findViewById(R.id.orderSummary);
+        //
+//        ZonedDateTime zdt = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            zdt = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+//        }
+        Date todayDate = new Date();
+        int currentHour =  todayDate.getHours();
+       // Log.i("currentTimes",Integer.toString(currentHour));
+
+
+        //not work on old android
+       // String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        //String timeNow[] = currentTime.split(":");
+
+        // Log.i("currenttime","this"+currentTime);
+      // Log.i("currentTimeh",timeNow[0]);
+        //int currentHour=Integer.parseInt(timeNow[0]);
         summaryText.setMovementMethod(new ScrollingMovementMethod());
         placeOrder=findViewById(R.id.placeOrder);
         myDatabase = this.openOrCreateDatabase("KrishnaSweetsDatabase", MODE_PRIVATE, null);
         sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets", Context.MODE_PRIVATE);
         addressSave=(!(sharedPreferences.getBoolean("newUser",true)));
         shopNumber="919554137222";
+
+        //
+
+        //
         callText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +158,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 message=message.concat("Qty : "+Integer.toString(c.getInt(qtyIndex))+"\n");
 
-                itemSummary=itemSummary.concat(Integer.toString(c.getInt(qtyIndex) * c.getInt(priceIndex))+"Rs\n");
+                itemSummary=itemSummary.concat("Rs."+Integer.toString(c.getInt(qtyIndex) * c.getInt(priceIndex))+"\n");
              //   message=message.concat(Integer.toString(c.getInt(qtyIndex) * c.getInt(priceIndex)) + " Rs"+"."+"\n");
                 totalPrice = totalPrice + (c.getInt(qtyIndex) * c.getInt(priceIndex));
                 //   CartItem cartItem = new CartItem(c.getString(nameIndex), c.getString(imageUrlIndex), c.getString(categoryIndex), c.getInt(qtyIndex), c.getInt(priceIndex));
@@ -138,7 +169,7 @@ public class PaymentActivity extends AppCompatActivity {
                 // 15:56
             }
             i--;
-            message=message.concat("\n*Total Items:* "+Integer.toString(i)+"       *Total Price:* "+Integer.toString(totalPrice)+" Rs\n");
+            message=message.concat("\n*Total Items:* "+Integer.toString(i)+"       *Total Price:* Rs."+Integer.toString(totalPrice)+"\n");
             message=message.concat("\n*Customer Details* :\n");
            userData();
         }else{
@@ -150,13 +181,13 @@ public class PaymentActivity extends AppCompatActivity {
             message=message.concat("Qty : "+qty+"\n");
             itemSummary=itemSummary.concat(Integer.toString(i)+". "+"Item: "+item+"\n     Quantity: "+qty+"    Price: ");
             totalPrice=price*qty;
-            itemSummary=itemSummary.concat(totalPrice+"Rs\n");
-            message=message.concat("\n*Total Items:* 1"+"                 *Total Price:* "+Integer.toString(totalPrice)+" Rs\n");
+            itemSummary=itemSummary.concat("Rs."+totalPrice+"\n");
+            message=message.concat("\n*Total Items:* 1"+"                 *Total Price:* Rs."+Integer.toString(totalPrice)+"\n");
             message=message.concat("\n*Customer Details* :\n");
             userData();
 
         }
-        itemSummary=itemSummary.concat("\n  Total Items :"+i+"       Total Price :"+totalPrice+"Rs");
+        itemSummary=itemSummary.concat("\n  Total Items :"+i+"       \n  Total Price :"+"Rs."+totalPrice);
         summaryText.setText(itemSummary);
           
       //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,data);
@@ -165,25 +196,42 @@ public class PaymentActivity extends AppCompatActivity {
             placeOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(addressSave){
-                       // Toast.makeText(PaymentActivity.this, "Address Saved", Toast.LENGTH_SHORT).show();
-                    isAppInstalled=isInstalled("com.whatsapp");
-                    if(isAppInstalled){
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setPackage("com.whatsapp");
-                        i.setData(Uri.parse("https://api.whatsapp.com/send?phone="+shopNumber+"&text="+ message));
-                      //  startActivity(i);
-                        startActivityForResult(i,2);
+                    if(currentHour>=11&&currentHour<=20) {
+                        if (totalPrice >= 200) {
+                            if (addressSave) {
+                                // Toast.makeText(PaymentActivity.this, "Address Saved", Toast.LENGTH_SHORT).show();
+                                isAppInstalled = isInstalled("com.whatsapp");
+                                if (isAppInstalled) {
+                                    Intent i = new Intent(Intent.ACTION_VIEW);
+                                    i.setPackage("com.whatsapp");
+                                    i.setData(Uri.parse("https://api.whatsapp.com/send?phone=" + shopNumber + "&text=" + message));
+                                    //  startActivity(i);
+                                    startActivityForResult(i, 2);
+                                } else {
+                                    Toast.makeText(PaymentActivity.this, "Please Install WhatsAPP", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(PaymentActivity.this, "Please fill your details", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), UserProfile.class));
+                                addressSave = (!(sharedPreferences.getBoolean("newUser", true)));
+                            }
+                        } else {
+          //                  Toast.makeText(PaymentActivity.this, "Delivery not available below Rs.200", Toast.LENGTH_SHORT).show();
+                            showError("Delivery not available below Rs.200!!");
+                        }
                     }else{
-                        Toast.makeText(PaymentActivity.this, "Please Install WhatsAPP", Toast.LENGTH_SHORT).show();
-                    }
-                    }else{
-                        Toast.makeText(PaymentActivity.this, "Please fill your details", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),UserProfile.class));
-                        addressSave=(!(sharedPreferences.getBoolean("newUser",true)));
+                        showError("Delivery available from 11AM to 9PM only!!");
                     }
                 }
             });
+    }
+    private void showError(String errorGet){
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Order not send")
+                .setMessage(errorGet)
+                .setPositiveButton("Ok",null)
+                .show();
     }
 
     private void userData() {
@@ -199,6 +247,7 @@ public class PaymentActivity extends AppCompatActivity {
                 message=message.concat("Phone no. : "+cursor.getString(phoneIndex)+"\n");
                 message=message.concat("PinCode : *"+Integer.toString(cursor.getInt(pinCodeIndex))+"*\n");
                 message=message.concat("Address : *"+cursor.getString(addressIndex)+"*\n");
+              //  Toast.makeText(this, " name "+cursor.getString(name), Toast.LENGTH_SHORT).show();
 //                    name.setText(c.getString(name));
 //                    phone.setText(c.getString(phoneIndex));
 //                    address.setText(c.getString(addressIndex));
@@ -207,9 +256,11 @@ public class PaymentActivity extends AppCompatActivity {
 //                 sharedPreferences.edit().putBoolean(buyItemName+selectedCategory, false).apply();
 //                 15:56
 //                 mCartItem.add(cartItem);
+                add++;
+                message=message.concat("\n*Cash On Delivery* ->Rs. *"+Integer.toString(totalPrice)+"*");
             }
-            message=message.concat("\n*Cash On Delivery* ->  *"+Integer.toString(totalPrice)+"* Rs");
-        add++;
+            //message=message.concat("\n*Cash On Delivery* ->Rs. *"+Integer.toString(totalPrice)+"*");
+        //add++;
         }catch(Exception e){
             //Toast.makeText(this, "catch", Toast.LENGTH_SHORT).show();
             //newUser=true;
@@ -258,8 +309,11 @@ public class PaymentActivity extends AppCompatActivity {
             //Do what you want on the refresh procedure here
            // addressSave = (!(sharedPreferences.getBoolean("newUser", true)));
             userData();
+           // Toast.makeText(this, "Im am working Hello", Toast.LENGTH_SHORT).show();
+
            // add++;
         }
+       // Toast.makeText(this, "Im am working Hello 2", Toast.LENGTH_SHORT).show();
        // Toast.makeText(this, "Im am working Hello", Toast.LENGTH_SHORT).show();
     }
 }
