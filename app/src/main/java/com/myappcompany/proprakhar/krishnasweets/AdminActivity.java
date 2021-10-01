@@ -83,7 +83,7 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
-        String[] itemCategories={"Pasta","FriedRice","Chinese","Noodles","Burger","PavBaji","IceCream","Dhhosa","Soup","ColdDrink","Bakery","Nasta","Sweets","Pizza","Other Items","Offers"};
+        String[] itemCategories={"Pasta","FriedRice","Chinese","Noodles","Burger","PavBaji","IceCream","Dhhosa","Soup","ColdDrink","Bakery","Nasta","Sweets","Pizza","Other Items","Offers","Create Post","Gift"};
         Arrays.sort(itemCategories);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,itemCategories);
         mItemSpinner.setAdapter(adapter);
@@ -211,28 +211,34 @@ public class AdminActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
 
                     //
-                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
+//                    if(mItemSpinner.getSelectedItem().toString()!="Create Post") {
+                        fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
 
-                            String downloadUrl = uri.toString();
-                            // picUrl=downloadUrl;
-                            //  Log.i("AMan",downloadUrl);
-                            //  Toast.makeText(MainActivity.this, downloadUrl, Toast.LENGTH_SHORT).show();
-                            Upload upload=new Upload(itemNameEditText.getText().toString().trim(),category1EditText.getText().toString().trim(),category2EditText.getText().toString().trim(),downloadUrl,priceCategory1EditText.getText().toString(),priceCategory2EditText.getText().toString());
+                                String downloadUrl = uri.toString();
+                                // picUrl=downloadUrl;
+                                //  Log.i("AMan",downloadUrl);
+                                //  Toast.makeText(MainActivity.this, downloadUrl, Toast.LENGTH_SHORT).show();
+                                Upload upload = new Upload(itemNameEditText.getText().toString().trim(), category1EditText.getText().toString().trim(), category2EditText.getText().toString().trim(), downloadUrl, priceCategory1EditText.getText().toString(), priceCategory2EditText.getText().toString());
 
-                            String uploadId = mDatabaseRef.push().getKey();
-                           mDatabaseRef.child(itemNameEditText.getText().toString()).setValue(upload);
-                            //mDatabaseRef.child(uploadId).setValue(upload);
+                                String uploadId = mDatabaseRef.push().getKey();
+                                mDatabaseRef.child(itemNameEditText.getText().toString()).setValue(upload);
+                                //mDatabaseRef.child(uploadId).setValue(upload);
 
-                            checkUploadProgress.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
-                        }});
-                    //
-                    //Log.i("AMan",picUrl);
-                    //yha se
-                    //
-                }
+                                checkUploadProgress.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        //
+                        //Log.i("AMan",picUrl);
+                        //yha se
+                        //
+//                    }else{
+//                        checkUploadProgress.setVisibility(View.INVISIBLE);
+//                        Toast.makeText(getApplicationContext(), "Post Created", Toast.LENGTH_SHORT).show();
+//                    }
+                    }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {

@@ -42,7 +42,7 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseFirestore fStore;
     private String fullName,email,uid;
     private SharedPreferences sharedPreferences;
-    private GifImageView loading;
+    private GifImageView loading,login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +50,10 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         chefImage =findViewById(R.id.krishna);
         loading=findViewById(R.id.chefGif);
+
       //  sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets",Context.MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
-        findViewById(R.id.sign_in_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.logingif).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signIn();
@@ -64,7 +65,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
             loading.setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
+            //findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
             FirebaseUser user = mAuth.getCurrentUser();
             fullName=user.getDisplayName();
             uid=user.getUid();
@@ -103,7 +104,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
+      //  findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
         loading.setVisibility(View.VISIBLE);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -131,7 +132,7 @@ public class SignInActivity extends AppCompatActivity {
          startActivity(new Intent(getApplicationContext(), AdminActivity.class));
          finish();
      }else{
-         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+         startActivity(new Intent(getApplicationContext(), MainActivity2.class));
          finish();
      }
     }

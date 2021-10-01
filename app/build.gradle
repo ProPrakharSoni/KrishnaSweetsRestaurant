@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
 }
-
 android {
     compileSdkVersion 30
 
@@ -36,11 +35,13 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.android.gms:play-services-fido:18.1.0'
+    implementation 'androidx.core:core:1.6.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 
     implementation platform('com.google.firebase:firebase-bom:26.6.0')
-    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore:22.1.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
@@ -55,4 +56,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.google.android.gms:play-services-ads:20.3.0'
+
 }

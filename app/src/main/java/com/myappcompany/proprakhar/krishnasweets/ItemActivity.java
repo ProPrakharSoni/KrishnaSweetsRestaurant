@@ -3,6 +3,7 @@ package com.myappcompany.proprakhar.krishnasweets;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.grpc.Context;
@@ -20,8 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,12 +45,12 @@ import java.util.List;
 public class ItemActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
     // Here data shown=>
-    private ImageView cart,profile;
+  //  private ImageView cart,profile;
     private FirebaseAuth mAuth;
     private RecyclerView mRecyclerView;
     private ItemAdapter mAdapter;
     private int sizelist;
-    private TextView itemCheck;
+    private TextView itemCheck,userName;
     private RecyclerView.LayoutManager layoutManager;
     private List<Upload> mUploads;
     private DatabaseReference mDatabaseRef;
@@ -53,37 +60,59 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
     private Intent intent;
     private GifImageView chefGif;
     private FirebaseUser user ;
-
+    private DrawerLayout drawerLayout;
+    private ImageView userImage;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
+        drawerLayout=findViewById(R.id.drawerlayout);
         chefGif=findViewById(R.id.chefGif);
         itemCheck=findViewById(R.id.itemCheck);
+        userImage=findViewById(R.id.userImage);
         mRecyclerView=findViewById(R.id.itemRecyclerView);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         email=user.getEmail();
+        userName=findViewById(R.id.userName);
+        userName.setText(mAuth.getCurrentUser().getDisplayName());
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        try {
+            Glide.with(getApplicationContext())
+                    .load(mAuth.getCurrentUser().getPhotoUrl())
+                    .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+                    .override(1000, 200) // resizing
+                    .centerInside()
+                    .into(userImage);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         mRecyclerView.setHasFixedSize(true);
         layoutManager=new GridLayoutManager(this,2);
         mRecyclerView.setLayoutManager(layoutManager);
-        cart =findViewById(R.id.cart);
-        profile=findViewById(R.id.profile);
-        cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),CartActivity.class));
-            }
-        });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // intent.putExtra("giveItem","");
-                //startActivity(intent);
-                startActivity(new Intent(getApplicationContext(),UserProfile.class));
-            }
-        });
+      //  cart =findViewById(R.id.cart);
+     //   profile=findViewById(R.id.profile);
+//        cart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(),CartActivity.class));
+//            }
+//        });
+//        profile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // intent.putExtra("giveItem","");
+//                //startActivity(intent);
+//                startActivity(new Intent(getApplicationContext(),UserProfile.class));
+//            }
+//        });
+
+
 //        mItemAdapter=new ItemAdapter(this);
        // mRecyclerView.setAdapter(mItemAdapter);
         mUploads=new ArrayList<>();
@@ -93,22 +122,22 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
         Intent intent = getIntent();
         String val =intent.getStringExtra("giveItem");
         //Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
-        Picasso.get()
-                .load(mAuth.getCurrentUser().getPhotoUrl())
-                //.placeholder(R.mipmap.ic_launcher)
-                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
-                .centerInside()
-                .fit()
-                .transform(new CropCircleTransformation())
-                .into(profile);
-        Picasso.get()
-                .load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV7VoOgaHUhoeKNRFDpyL1D__B72rfkIuFrA&usqp=CAU")
-                //.placeholder(R.mipmap.ic_launcher)
-                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
-                .centerInside()
-                .fit()
-                .transform(new CropCircleTransformation())
-                .into(cart);
+//        Picasso.get()
+//                .load(mAuth.getCurrentUser().getPhotoUrl())
+//                //.placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+//                .centerInside()
+//                .fit()
+//                .transform(new CropCircleTransformation())
+//                .into(profile);
+//        Picasso.get()
+//                .load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV7VoOgaHUhoeKNRFDpyL1D__B72rfkIuFrA&usqp=CAU")
+//                //.placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+//                .centerInside()
+//                .fit()
+//                .transform(new CropCircleTransformation())
+//                .into(cart);
         mStorage=FirebaseStorage.getInstance();
         mDatabaseRef= FirebaseDatabase.getInstance().getReference(val);
         try {
@@ -222,4 +251,53 @@ public class ItemActivity extends AppCompatActivity implements RecyclerViewClick
         super.onDestroy();
         mDatabaseRef.removeEventListener(mDBListener);
     }
+    public void ClickMenu(View view){
+        //open drawer
+        MainActivity2.openDrawer(drawerLayout);
+    }
+    public void ClickLogo(View view){
+        //close Drawer
+        MainActivity2.closeDrawer(drawerLayout);
+    }
+    public void ClickHome(View view){
+        //close Drawer
+        MainActivity2.redirectActivity(this,MainActivity2.class);
+    }
+   public void ClickDashboard(View view){
+        MainActivity2.redirectActivity(this,MainActivity.class);
+   }
+   public void ClickAboutUs(View view){
+        MainActivity2.redirectActivity(this,AboutAdmin.class);
+   }
+   public void ClickLogout(View view){
+        signOut();
+   }
+    public  void signOut() {
+        // Firebase sign out
+        try {
+            mAuth.signOut();
+            // Google sign out
+            mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finishAffinity();
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            finish();
+                        }
+                    });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void ClickCart(View view){
+        MainActivity2.redirectActivity(this,CartActivity.class);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //closeDrawer
+        MainActivity2.closeDrawer(drawerLayout);
+    }
+
 }

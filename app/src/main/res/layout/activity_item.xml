@@ -1,99 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFBFB"
-    tools:context=".ItemActivity">
+    android:background="#000000"
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#76E8D6"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="50dp"
+        <include
+            android:id="@+id/include"
+            layout="@layout/main_toolbar" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemRecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/balkrishn" />
+            android:scrollbarThumbVertical="@color/purple_700"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
 
-        <TextView
-            android:id="@+id/krishna_sweet_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#E1E87D"
-            android:backgroundTint="#76E8D6"
-            android:fontFamily="sans-serif-smallcaps"
-            android:gravity="center|left"
-            android:text="Krishna Sweets"
-            android:textColor="#FB0E76"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/cart"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/cart1" />
-
-        <ImageView
-            android:id="@+id/profile"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:background="#76E8D6"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/mychef" />
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scrollbarThumbVertical="@color/purple_700"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-
-    <pl.droidsonroids.gif.GifImageView
-
-        android:id="@+id/chefGif"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/chef"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/itemCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fontFamily="serif"
+        android:gravity="center"
         android:text="No Item Here"
-        android:textColor="#0B2CE3"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         android:visibility="invisible"
@@ -101,6 +47,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <pl.droidsonroids.gif.GifImageView
+
+        android:id="@+id/chefGif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/chef"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white">
+
+        <include layout="@layout/main_nav_drawer" />
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

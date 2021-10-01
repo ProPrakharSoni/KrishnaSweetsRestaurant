@@ -1,44 +1,40 @@
 package com.myappcompany.proprakhar.krishnasweets;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.squareup.picasso.Transformation;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> {
+import java.util.List;
 
+public class ExtraFrontAdapter extends RecyclerView.Adapter<ExtraFrontAdapter.FrontViewHlder> {
     private Context mContext;
     private List<Upload> mUploads;
     private RecyclerViewClickInterface recyclerViewClickInterface;
-    public ItemAdapter(Context context,List<Upload> uploads,RecyclerViewClickInterface recyclerViewClickInterface1){
+
+    public ExtraFrontAdapter(Context context, List<Upload> uploads){
         mContext=context;
         mUploads=uploads;
-        recyclerViewClickInterface=recyclerViewClickInterface1;
+       // recyclerViewClickInterface=recyclerViewClickInterface1;
     }
-
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(mContext).inflate(R.layout.image_item,parent,false);
-        return new MyViewHolder(v);
+    public FrontViewHlder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v= LayoutInflater.from(mContext).inflate(R.layout.extra_item_recycle,parent,false);
+        return new FrontViewHlder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FrontViewHlder holder, int position) {
         Upload uploadCurrent = mUploads.get(position);
         holder.mPrice.setText("Rs."+uploadCurrent.getCategory1Price());
         holder.mItemName.setText(uploadCurrent.getName());
@@ -55,7 +51,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
                 .override(200, 200) // resizing
                 .centerInside()
                 .into(holder.mItemImage);
-
     }
 
     @Override
@@ -63,23 +58,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
         return mUploads.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
 
+    public class FrontViewHlder extends RecyclerView.ViewHolder{
         public TextView mPrice,mItemName;
         public ImageView mItemImage;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public FrontViewHlder(@NonNull View itemView) {
             super(itemView);
             mPrice=itemView.findViewById(R.id.timestamp);
             mItemName=itemView.findViewById(R.id.someInfo);
             mItemImage= itemView.findViewById(R.id.itemImageforRecycle);
 
-           // mItemImage=itemView.findViewById(R.id.itemImage);
+            // mItemImage=itemView.findViewById(R.id.itemImage);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-               recyclerViewClickInterface.onItemClick(getAdapterPosition());
+                    recyclerViewClickInterface.onItemClick(getAdapterPosition());
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {

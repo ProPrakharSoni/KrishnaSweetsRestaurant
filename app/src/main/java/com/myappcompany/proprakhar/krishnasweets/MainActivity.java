@@ -3,6 +3,8 @@ package com.myappcompany.proprakhar.krishnasweets;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ImageViewCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.bumptech.glide.Glide;
@@ -28,28 +30,47 @@ public class MainActivity extends AppCompatActivity {
 
 //    Button logout,mData;
 //    GoogleSignInClient mGoogleSignInClient;
-
+    private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    private ImageView cart,profile;
     private Button Pasta,Fried_Rice,Chinese,Chaumin,Burger,PavBaji,IceCream,Dhosa,Soup,ColdDrink,Bakery,Nasta,Sweets,Pizza,otherItems,offer,aboutUs;
     private Intent intent;
     private DatabaseReference mDatabaseRef;
-    private TextView developer,txtMarquee;
+    private TextView developer,txtMarquee,userName;
     private String name,movingText;
+    private DrawerLayout drawerLayout;
+    private ImageView userImage;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         txtMarquee =findViewById(R.id.marqueeText);
-
+        drawerLayout = findViewById(R.id.drawerlayout);
         // Now we will call setSelected() method
         // and pass boolean value as true
         txtMarquee.setSelected(true);
+        //userImage=findViewById()
+        userImage=findViewById(R.id.userImage);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        try {
+            Glide.with(getApplicationContext())
+                    .load(mAuth.getCurrentUser().getPhotoUrl())
+                    .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+                    .override(1000, 200) // resizing
+                    .centerInside()
+                    .into(userImage);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        userName=findViewById(R.id.userName);
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("");// In my experience i get that if I make once connection here (I don't use this variable here) then It takes less time to get data from firebase again when this method is used again;
-        mAuth = FirebaseAuth.getInstance();
         name=mAuth.getCurrentUser().getDisplayName();
+        userName.setText(name);
         txtMarquee.setText("Hi "+name+" ,Welcome to Krishna Sweets App, Home delivery available above Rs.200 from 11AM to 9PM!!");
         aboutUs=findViewById(R.id.aboutUs);
         aboutUs.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         intent = new Intent(getApplicationContext(),ItemActivity.class);
-        cart =findViewById(R.id.cart);
-    profile=findViewById(R.id.profile);
     developer = findViewById(R.id.developer);
     developer.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -71,14 +90,6 @@ public class MainActivity extends AppCompatActivity {
     FirebaseMessaging.getInstance().subscribeToTopic("notification");
     otherItems=findViewById(R.id.otherItems);
     offer=findViewById(R.id.offers);
-    profile.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-           // intent.putExtra("giveItem","");
-            //startActivity(intent);
-            startActivity(new Intent(getApplicationContext(),UserProfile.class));
-        }
-    });
     Pasta=findViewById(R.id.Pasta);
     Pasta.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -205,28 +216,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     });
-    cart.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            startActivity(new Intent(getApplicationContext(),CartActivity.class));
-        }
-    });
-        Picasso.get()
-                .load(mAuth.getCurrentUser().getPhotoUrl())
-                //.placeholder(R.mipmap.ic_launcher)
-                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
-                .centerInside()
-                .fit()
-                .transform(new CropCircleTransformation())
-                .into(profile);
-        Picasso.get()
-                .load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV7VoOgaHUhoeKNRFDpyL1D__B72rfkIuFrA&usqp=CAU")
-                //.placeholder(R.mipmap.ic_launcher)
-                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
-                .centerInside()
-                .fit()
-                .transform(new CropCircleTransformation())
-                .into(cart);
+
 
 //        Glide.with(getApplicationContext())
 //                .load(mAuth.getCurrentUser().getPhotoUrl()) // image url
@@ -238,5 +228,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void ClickMenu(View view){
+        //open drawer
+        MainActivity2.openDrawer(drawerLayout);
+    }
+    public void ClickCart(View view){
+        MainActivity2.redirectActivity(this,CartActivity.class);
+    }
+    public void ClickLogo(View view){
+        //close Drawer
+        MainActivity2.closeDrawer(drawerLayout);
+    }
+    public void ClickHome(View view){
+        //close Drawer
+
+        MainActivity2.redirectActivity(this,MainActivity2.class);
+    }
+    public void ClickDashboard(View view){
+//        MainActivity2.redirectActivity(this,MainActivity.class);
+        MainActivity2.closeDrawer(drawerLayout);
+
+    }
+    public void ClickAboutUs(View view){
+        MainActivity2.redirectActivity(this,AboutAdmin.class);
+    }
+    public void ClickLogout(View view){
+       signOut();
+    }
+    public  void signOut() {
+        // Firebase sign out
+        try {
+            mAuth.signOut();
+            // Google sign out
+            mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finishAffinity();
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            finish();
+                        }
+                    });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //closeDrawer
+        MainActivity2.closeDrawer(drawerLayout);
+    }
 
 }

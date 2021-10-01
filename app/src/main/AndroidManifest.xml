@@ -4,12 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <queries>
-
         <package android:name="com.whatsapp" />
         <package android:name="com.whatsapp.w4b" />
-
     </queries>
+
     <application
         android:allowBackup="false"
         android:hardwareAccelerated="false"
@@ -19,16 +19,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".AboutAdmin" android:screenOrientation = "portrait"/>
-        <activity android:name=".Developer" android:screenOrientation = "portrait" />
-        <activity android:name=".PaymentActivity" android:screenOrientation = "portrait" />
-        <activity android:name=".UserProfile"  android:screenOrientation = "portrait"/>
-        <activity android:name=".BuyActivity"  android:screenOrientation = "portrait"/>
-        <activity android:name=".ItemActivity"  android:screenOrientation = "portrait"/>
-        <activity android:name=".CartActivity" android:screenOrientation = "portrait" />
-        <activity android:name=".AdminActivity"  android:screenOrientation = "portrait"/>
-        <activity android:name=".MainActivity"  android:screenOrientation = "portrait"/>
-        <activity android:name=".SignInActivity" android:screenOrientation = "portrait">
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true" />
+        <activity
+            android:name=".AboutAdmin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Developer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserProfile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BuyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ItemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AdminActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignInActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,6 +62,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
     </application>
 
 </manifest>

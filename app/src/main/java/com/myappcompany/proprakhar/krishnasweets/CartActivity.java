@@ -14,7 +14,9 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
     private SharedPreferences sharedPreferences;
     private int totalPrice=0;
     private ImageView cartEmptyPic;
+    private boolean valid=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +69,19 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewClick
            int imageUrlIndex = c.getColumnIndex("imageUrl");
            c.moveToFirst();
            while (!c.isAfterLast()) {
-               CartItem cartItem = new CartItem(c.getString(nameIndex), c.getString(imageUrlIndex), c.getString(categoryIndex), c.getInt(qtyIndex), c.getInt(priceIndex));
-               add=c.getInt(qtyIndex)*c.getInt(priceIndex);
-               totalPrice=totalPrice+add;
+               Log.i("urlimg",c.getString(imageUrlIndex));
+             //  valid= URLUtil.isValidUrl(c.getString(imageUrlIndex));
+               valid= Patterns.WEB_URL.matcher(c.getString(imageUrlIndex)).matches();
+               if(!valid){
+                   myDatabase.execSQL("Delete from OurCart where name ='" + c.getString(nameIndex) + "' AND  category = '"+c.getString(categoryIndex) + "' ");
+                   sharedPreferences.edit().putBoolean(c.getString(nameIndex)+c.getString(categoryIndex), true).apply();
+               }else {
+                   CartItem cartItem = new CartItem(c.getString(nameIndex), c.getString(imageUrlIndex), c.getString(categoryIndex), c.getInt(qtyIndex), c.getInt(priceIndex));
+                   add = c.getInt(qtyIndex) * c.getInt(priceIndex);
+                   totalPrice = totalPrice + add;
+                   mCartItem.add(cartItem);
+               }
                c.moveToNext();
-               mCartItem.add(cartItem);
            }
            totalMoney.setText("Rs."+Integer.toString(totalPrice));
            buy = findViewById(R.id.buy);

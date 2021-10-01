@@ -1,6 +1,9 @@
 package com.myappcompany.proprakhar.krishnasweets;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 import android.content.Context;
@@ -19,13 +22,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class BuyActivity extends AppCompatActivity {
    // glide faster than picasso
     private ImageView buyItemImage;
-    private ImageView cartImage,profile;
+   // private ImageView cartImage,profile;
     private RadioGroup radioGroup;
     private FirebaseAuth mAuth;
     private TextView itemName,price,buyQuantity;
@@ -35,45 +43,52 @@ public class BuyActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private Boolean isFirstTimeAddToCart;
     private int qty=1;
+    private DrawerLayout drawerLayout;
+    private GoogleSignInClient mGoogleSignInClient;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy);
-        cartImage =findViewById(R.id.cart);
-        profile=findViewById(R.id.profile);
+//        cartImage =findViewById(R.id.cart);
+//        profile=findViewById(R.id.profile);
+        drawerLayout= findViewById(R.id.drawerlayout);
         mAuth = FirebaseAuth.getInstance();
-        cartImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),CartActivity.class));
-            }
-        });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // intent.putExtra("giveItem","");
-                //startActivity(intent);
-                startActivity(new Intent(getApplicationContext(),UserProfile.class));
-            }
-        });
-        Picasso.get()
-                .load(mAuth.getCurrentUser().getPhotoUrl())
-                //.placeholder(R.mipmap.ic_launcher)
-                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
-                .centerInside()
-                .fit()
-                .transform(new CropCircleTransformation())
-                .into(profile);
-        Picasso.get()
-                .load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV7VoOgaHUhoeKNRFDpyL1D__B72rfkIuFrA&usqp=CAU")
-                //.placeholder(R.mipmap.ic_launcher)
-                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
-                .centerInside()
-                .fit()
-                .transform(new CropCircleTransformation())
-                .into(cartImage);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//  //      cartImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(),CartActivity.class));
+//            }
+//        });
+//        Picasso.get()
+//                .load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV7VoOgaHUhoeKNRFDpyL1D__B72rfkIuFrA&usqp=CAU")
+//                //.placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+//                .centerInside()
+//                .fit()
+//                .transform(new CropCircleTransformation())
+//                .into(cartImage);
+//        profile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // intent.putExtra("giveItem","");
+//                //startActivity(intent);
+//                startActivity(new Intent(getApplicationContext(),UserProfile.class));
+//            }
+//        });
+//        Picasso.get()
+//                .load(mAuth.getCurrentUser().getPhotoUrl())
+//                //.placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.color.common_google_signin_btn_text_light_disabled)
+//                .centerInside()
+//                .fit()
+//                .transform(new CropCircleTransformation())
+//                .into(profile);
         sharedPreferences=this.getSharedPreferences("com.myappcompany.proprakhar.krishnasweets", Context.MODE_PRIVATE);
         buyItemImage=findViewById(R.id.buyItemImage);
         buyQuantity=findViewById(R.id.buyQuantity);
@@ -255,5 +270,52 @@ public class BuyActivity extends AppCompatActivity {
                         cart.setText("Add to Cart");
                     }
     }
-
+    public void ClickMenu(View view){
+        //open drawer
+        MainActivity2.openDrawer(drawerLayout);
+    }
+    public void ClickLogo(View view){
+        //close Drawer
+        MainActivity2.closeDrawer(drawerLayout);
+    }
+    public void ClickHome(View view){
+        //close Drawer
+        MainActivity2.redirectActivity(this,MainActivity.class);
+    }
+    public void ClickDashboard(View view){
+        MainActivity2.redirectActivity(this,MainActivity.class);
+    }
+    public void ClickAboutUs(View view){
+        MainActivity2.redirectActivity(this,AboutAdmin.class);
+    }
+    public void ClickLogout(View view){
+       signOut();
+    }
+    public  void signOut() {
+        // Firebase sign out
+        try {
+            mAuth.signOut();
+            // Google sign out
+            mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finishAffinity();
+                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            finish();
+                        }
+                    });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //closeDrawer
+        MainActivity2.closeDrawer(drawerLayout);
+    }
+    public void ClickCart(View view){
+        MainActivity2.redirectActivity(this,CartActivity.class);
+    }
 }
