@@ -67,7 +67,7 @@ public class MainActivity2 extends AppCompatActivity {
     private DatabaseReference mDatabaseRef,mGiftDatabaseRef;
   //  private RecyclerView.LayoutManager layoutManager;
     private ValueEventListener mDBListener,mGiftDBListener;
-    private AdView mAdView;
+    private AdView adView;
     private TextView viewMore;
     private Intent viewMoreIntent;
     //private HorizontalScrollView s;
@@ -76,21 +76,31 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        // Initialize the Mobile Ads SDK.
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
-//        MobileAds.initialize(getApplicationContext(),
-//                "ca-app-pub-3940256099942544~3347511713");
-//        MobileAds.i
-        mAdView = findViewById(R.id.adView);
-        mAdView = new AdView(this);
 
-        mAdView.setAdSize(AdSize.BANNER);
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        MobileAds.setRequestConfiguration(
+            new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+                                              .build());
 
-        mAdView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
-// TODO: Add adView to your view hierarchy.
+        // Gets the ad view defined in layout/ad_fragment.xml with ad unit ID set in
+        // values/strings.xml.
+        adView = findViewById(R.id.ad_view);
+
+        // Create an ad request.
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+
         viewMoreIntent = new Intent(getApplicationContext(),ItemActivity.class);
         viewMore=findViewById(R.id.viewMore);
         viewMore.setOnClickListener(new View.OnClickListener() {
@@ -100,77 +110,7 @@ public class MainActivity2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //
-        //test device
-
-        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);//
-        String deviceId = md5(android_id).toUpperCase();//
-     //   adRequest.addTestDevice(deviceId);
-
-       // boolean isTestDevice = adRequest.isTestDevice(this);
-
-        // Log.v(TAG, "is Admob Test Device ? "+deviceId+" "+isTestDevice); //to confirm it worked
-
-        Log.i("device_id",deviceId);
-
-
-        //..............
-
-//        List<String> testDeviceIds = Arrays.asList(deviceId);//
-//        RequestConfiguration configuration =
-//                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();//
-//        MobileAds.setRequestConfiguration(configuration);//
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-//        List<String> testDeviceIds = Arrays.asList(deviceId);
-//        RequestConfiguration configuration =
-//                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
-//        MobileAds.setRequestConfiguration(configuration);
-
-
- //       adRequest.addTestDevice(deviceId);
-
-//        List<String> testDeviceIds = Arrays.asList(deviceId);//
-//        RequestConfiguration configuration =
-//                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();//
-//        MobileAds.setRequestConfiguration(configuration);//
-
-        getUIDs();
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
-                // Code to be executed when an ad request fails.
-                Log.i("aderror",adError.toString());
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        });
-
-
-
-        intent = new Intent(getApplicationContext(),ItemActivity.class);
+           intent = new Intent(getApplicationContext(),ItemActivity.class);
         mAuth = FirebaseAuth.getInstance();
         aboutShop=findViewById(R.id.aboutKrishnaSweets);
         mRecyclerView=findViewById(R.id.newsRecycle);
@@ -194,14 +134,7 @@ public class MainActivity2 extends AppCompatActivity {
         giftRecyclerView.setLayoutManager(giftLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(layoutManager);
-//        gift1=findViewById(R.id.gift1);
-//        gift2=findViewById(R.id.gift2);
-//        gift3=findViewById(R.id.gift3);
-//        gift4=findViewById(R.id.gift4);
-//        gift5=findViewById(R.id.gift5);
-//        gift6=findViewById(R.id.gift6);
-//        gift7=findViewById(R.id.gift7);
-//        gift8=findViewById(R.id.gift8);
+
         drawerLayout = findViewById(R.id.drawerlayout);
         userImage=findViewById(R.id.userImage);
         userName=findViewById(R.id.userName);
@@ -294,87 +227,6 @@ public class MainActivity2 extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://assetscdn1.paytm.com/images/catalog/product/F/FA/FASCADBURY-CELEGIFT23761BDA1A2B1/1594625784636_0..jpg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift1);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://www.haldiram.com/assets/images/products/Soan-Papdi-veg31.jpg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift2);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://m.media-amazon.com/images/I/714ZqXhzXNL._SL1500_.jpg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift3);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://4.imimg.com/data4/SH/SD/ANDROID-10569818/product-500x500.jpeg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift4);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://m.media-amazon.com/images/I/71Taex6WC8L._SL1500_.jpg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift5);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://www.bigbasket.com/media/uploads/p/xxl/40157246-2_2-cadbury-dairy-milk-silk-hazelnut-chocolate-bar.jpg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift6);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://m.media-amazon.com/images/I/71vTZfNgMzL._SL1500_.jpg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift7);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            Glide.with(getApplicationContext())
-//                    .load("https://m.media-amazon.com/images/I/41pHqT80UVL.jpg") // image url
-//                    //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
-//                    .override(1000, 700) // resizing
-//                    .centerInside()
-//                    .into(gift8);
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
         try {
             Glide.with(getApplicationContext())
                     .load("https://static.toiimg.com/photo/51892394.cms") // image url
@@ -548,31 +400,6 @@ public class MainActivity2 extends AppCompatActivity {
               startActivity(intent);
           }
       });
-//        s=findViewById(R.id.horizontalScrollView);
-//        s.postDelayed(new Runnable() {
-//            public void run() {
-//                s.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-//            }
-//        }, 100L);
-//        s.post(new Runnable() {
-//            public void run() {
-//                s.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-//            }
-//        });
-//        view.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                ((HorizontalScrollView) Iview
-//                        .findViewById(R.id.s))
-//                        .fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-//            }
-//        });
-//        s.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                s.fullScroll(View.FOCUS_RIGHT);
-//            }
-//        });
 
 
 
@@ -651,62 +478,27 @@ public class MainActivity2 extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
         super.onPause();
         closeDrawer(drawerLayout);
     }
     @Override
     protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
         super.onDestroy();
         mDatabaseRef.removeEventListener(mDBListener);
         mGiftDatabaseRef.removeEventListener(mGiftDBListener);
     }
-
-
-
-    //testing
-    public static final String md5(final String s) {
-        try {
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest
-                    .getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                String h = Integer.toHexString(0xFF & messageDigest[i]);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
-            }
-            return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-           // Logger.logStackTrace(TAG,e);
+    /** Called when returning to the activity */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
         }
-        return "";
-    }
-    // testing end
-
-
-
-    void getUIDs()
-    {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    AdvertisingIdClient.Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
-                    String myId = adInfo != null ? adInfo.getId() : null;
-
-                    Log.i("UIDMY", myId);
-                } catch (Exception e) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "error occurred ", Toast.LENGTH_SHORT);
-                  //  toast.setGravity(gravity, 0,0);
-                    toast.show();
-                }
-            }
-        });
     }
 }

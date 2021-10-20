@@ -58,6 +58,7 @@ public class PaymentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         int i=1;
         add=1;
         setContentView(R.layout.activity_payment);

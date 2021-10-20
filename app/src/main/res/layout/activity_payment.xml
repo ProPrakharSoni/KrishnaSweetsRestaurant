@@ -7,6 +7,8 @@
     android:background="#000000"
     tools:context=".PaymentActivity">
 
+
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
@@ -180,5 +182,7 @@
         </LinearLayout>
 
     </ScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
