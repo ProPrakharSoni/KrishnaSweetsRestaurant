@@ -20,10 +20,10 @@ public class ExtraFrontAdapter extends RecyclerView.Adapter<ExtraFrontAdapter.Fr
     private List<Upload> mUploads;
     private RecyclerViewClickInterface recyclerViewClickInterface;
 
-    public ExtraFrontAdapter(Context context, List<Upload> uploads){
+    public ExtraFrontAdapter(Context context, List<Upload> uploads,RecyclerViewClickInterface recyclerViewClickInterface2){
         mContext=context;
         mUploads=uploads;
-       // recyclerViewClickInterface=recyclerViewClickInterface1;
+        recyclerViewClickInterface=recyclerViewClickInterface2;
     }
 
     @NonNull

@@ -1,6 +1,7 @@
 package com.myappcompany.proprakhar.krishnasweets;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -45,14 +48,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity implements RecyclerViewClickInterface, NewsFeedInterface {
 
     DrawerLayout drawerLayout;
     private ImageView userImage,pizza,burger,noodles,sweets,cakes,soup,samosa,friedRice,gift1,gift2,gift3,gift4,gift5,gift6,gift7,gift8,dosa;
@@ -69,7 +75,9 @@ public class MainActivity2 extends AppCompatActivity {
     private ValueEventListener mDBListener,mGiftDBListener;
     private AdView adView;
     private TextView viewMore;
-    private Intent viewMoreIntent;
+    private Intent viewMoreIntent,buyIntent;
+    private FirebaseStorage mStorage;
+    private String email;
     //private HorizontalScrollView s;
 
     @Override
@@ -101,7 +109,10 @@ public class MainActivity2 extends AppCompatActivity {
         // Start loading the ad in the background.
         adView.loadAd(adRequest);
 
+
+        mStorage=FirebaseStorage.getInstance();
         viewMoreIntent = new Intent(getApplicationContext(),ItemActivity.class);
+        buyIntent=new Intent(getApplicationContext(),BuyActivity.class);
         viewMore=findViewById(R.id.viewMore);
         viewMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,11 +123,13 @@ public class MainActivity2 extends AppCompatActivity {
         });
            intent = new Intent(getApplicationContext(),ItemActivity.class);
         mAuth = FirebaseAuth.getInstance();
+        email=mAuth.getCurrentUser().getEmail();
         aboutShop=findViewById(R.id.aboutKrishnaSweets);
         mRecyclerView=findViewById(R.id.newsRecycle);
         mRecyclerView.setHasFixedSize(true);
         giftRecyclerView=findViewById(R.id.giftRecycle);
        // giftRecyclerView.setHasFixedSize(true);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -128,12 +141,14 @@ public class MainActivity2 extends AppCompatActivity {
        // layoutManager=new GridLayoutManager(this,2);
         mUploads=new ArrayList<>();
         mGifts=new ArrayList<>();
-        mAdapter = new NewsAdapter(MainActivity2.this, mUploads);
-        mGiftAdapter = new ExtraFrontAdapter(MainActivity2.this, mGifts);
+        mAdapter = new NewsAdapter(MainActivity2.this, mUploads,MainActivity2.this);
+        mGiftAdapter = new ExtraFrontAdapter(MainActivity2.this, mGifts,MainActivity2.this);
         giftRecyclerView.setAdapter(mGiftAdapter);
         giftRecyclerView.setLayoutManager(giftLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(layoutManager);
+
+       mRecyclerView.setNestedScrollingEnabled(false);
 
         drawerLayout = findViewById(R.id.drawerlayout);
         userImage=findViewById(R.id.userImage);
@@ -211,7 +226,7 @@ public class MainActivity2 extends AppCompatActivity {
                         mUploads.add(upload);
                     }
 
-
+                    Collections.reverse(mUploads);
                     mAdapter.notifyDataSetChanged();
 
                 }
@@ -229,7 +244,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         try {
             Glide.with(getApplicationContext())
-                    .load("https://static.toiimg.com/photo/51892394.cms") // image url
+                    .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/pizza_resize.png?raw=true") // image url
                     //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                     .override(1000, 700) // resizing
                     .centerInside()
@@ -240,7 +255,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
         try{
            Glide.with(getApplicationContext())
-                .load("https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YnVyZ2VyfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/burger_resize.jpeg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                 .centerInside()
@@ -251,7 +266,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
          try{
            Glide.with(getApplicationContext())
-                .load("https://www.whiskaffair.com/wp-content/uploads/2020/03/Hakka-Noodles-2-3.jpg") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/noodles_resize.jpg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                    .centerInside()
@@ -262,7 +277,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
          try{
            Glide.with(getApplicationContext())
-                .load("https://www.rajbhog.com/wp-content/uploads/2021/03/10-Must-Try-Rajbhog-Sweets-870x635.jpg") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/sweets_resize.jpg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                 .centerInside()
@@ -273,7 +288,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
          try{
            Glide.with(getApplicationContext())
-                .load("https://i.pinimg.com/originals/ab/67/53/ab6753ec1cef75f1cc2052487b1f4059.jpg") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/cake_resize_pro.jpg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                 .centerInside()
@@ -284,7 +299,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
          try{
            Glide.with(getApplicationContext())
-                .load("https://www.inspiredtaste.net/wp-content/uploads/2018/10/Homemade-Vegetable-Soup-Recipe-2-1200.jpg") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/soup_resize.jpg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                 .centerInside()
@@ -295,7 +310,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
         try{
            Glide.with(getApplicationContext())
-                .load("https://www.simplyrecipes.com/thmb/UzO3UxgjYRECShzMe4eIliy4gis=/2000x1333/filters:fill(auto,1)/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2019__12__Vegetable-Samosas-LEAD-5-502b04ead41c4c7e91e1a214f1d9d939.jpg") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/samosa_resize.jpg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                 .centerInside()
@@ -306,7 +321,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
         try{
            Glide.with(getApplicationContext())
-                .load("https://www.whiskaffair.com/wp-content/uploads/2017/11/Schezwan-Egg-Fried-Rice-3.jpg") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/fried-rice_resize.jpg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                    .centerInside()
@@ -317,7 +332,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
          try{
            Glide.with(getApplicationContext())
-                .load("https://thumbs.dreamstime.com/b/masala-dosa-21646814.jpg") // image url
+                .load("https://github.com/ProPrakharSoni/Images/blob/master/resize/dosa_resized.jpg?raw=true") // image url
                 //.placeholder(R.mipmap.ic_launcher) // any placeholder to load at start
                 .override(1000, 700) // resizing
                    .centerInside()
@@ -500,5 +515,86 @@ public class MainActivity2 extends AppCompatActivity {
         if (adView != null) {
             adView.resume();
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Upload getUploadObject = mGifts.get(position);
+        String url = getUploadObject.getImageUrl();
+        // Log.i("url",url);
+        buyIntent.putExtra("url",url);
+        buyIntent.putExtra("itemName",getUploadObject.getName());
+        buyIntent.putExtra("category1Price",getUploadObject.getCategory1Price());
+        buyIntent.putExtra("category1Name",getUploadObject.getCategory1());
+        buyIntent.putExtra("category2Price",getUploadObject.getCategory2Price());
+        buyIntent.putExtra("category2Name",getUploadObject.getCategory2());
+        startActivity(buyIntent);
+    }
+
+    @Override
+    public void onItemLongClick(int position) {
+    }
+
+    @Override
+    public void onIncClick(int value, int position) {
+
+    }
+
+    @Override
+    public void onDecClick(int value, int position) {
+
+    }
+
+    @Override
+    public void onItemDelete(int position) {
+
+    }
+
+    @Override
+    public void onNewsItemClick(int position) {
+
+    }
+
+    @Override
+    public void onNewsItemLongClick(int position) {
+        if(email.equals("krishnasweetftp@gmail.com")||email.equals("ashish.krishna2014@gmail.com")||email.equals("prakhar.amansoni@gmail.com")||email.equals("paritsolutions@gmail.com")) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Are you sure?")
+                    .setMessage("Do you definitely want to delete this")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Upload selectedItem = mUploads.get(position);
+                            String selectedKey = selectedItem.getKey();
+                            StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
+                            imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                     mDatabaseRef.child(selectedKey).removeValue();
+                                    Toast.makeText(MainActivity2.this, "Item Deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
+        }
+    }
+
+    @Override
+    public void onNewsIncClick(int value, int position) {
+
+    }
+
+    @Override
+    public void onNewsDecClick(int value, int position) {
+
+    }
+
+    @Override
+    public void onNewsItemDelete(int position) {
+
     }
 }

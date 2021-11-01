@@ -22,15 +22,15 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
     private Context mContext;
     private List<Upload> mUploads;
-
+    private NewsFeedInterface recyclerViewClickInterface;
 
     final int radius = 50;
     final int margin = 5;
     final Transformation transformation = new RoundedCornersTransformation(radius, margin);
-        public NewsAdapter(Context context,List<Upload> uploads){
+        public NewsAdapter(Context context,List<Upload> uploads,NewsFeedInterface newsFeedInterface){
             mContext=context;
             mUploads=uploads;
-            //recyclerViewClickInterface=recyclerViewClickInterface1;
+            recyclerViewClickInterface=newsFeedInterface;
         }
 
         @NonNull
@@ -45,7 +45,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
         @Override
         public void onBindViewHolder(@NonNull NewsAdapter.MyViewHolder holder, int position) {
             Upload uploadCurrent = mUploads.get(position);
-            holder.mtime.setText("Rs."+uploadCurrent.getCategory1Price());
+            holder.mtime.setText(uploadCurrent.getCategory1());
             holder.mSomeInfo.setText(uploadCurrent.getName());
         Picasso.get()
                 .load(uploadCurrent.getImageUrl())
@@ -81,19 +81,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
 
             // mItemImage=itemView.findViewById(R.id.itemImage);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    recyclerViewClickInterface.onItemClick(getAdapterPosition());
-//                }
-//            });
-//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    recyclerViewClickInterface.onItemLongClick(getAdapterPosition());
-//                    return true;
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    recyclerViewClickInterface.onNewsItemClick(getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    recyclerViewClickInterface.onNewsItemLongClick(getAdapterPosition());
+                    return true;
+                }
+            });
         }
     }
 }

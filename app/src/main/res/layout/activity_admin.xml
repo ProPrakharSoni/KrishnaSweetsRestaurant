@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#772323"
             android:ems="10"
-            android:hint="Item Name"
+            android:hint="Item Name / Information"
             android:textColor="#131313"
             android:textColorHighlight="#121010"
             android:textColorHint="#1B1616"

@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -40,7 +41,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -55,7 +60,7 @@ public class AdminActivity extends AppCompatActivity {
     private ImageView mImageView;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
-    private String itemName,category1,category2;
+    private String itemName,category1,category2,currentTime;
     private int priceCategory1,priceCategory2;
     private UploadTask uploadTask2;
     private EditText itemNameEditText,category1EditText,category2EditText,priceCategory1EditText,priceCategory2EditText;
@@ -68,6 +73,22 @@ public class AdminActivity extends AppCompatActivity {
         userView=findViewById(R.id.userView);
         checkUploadProgress=findViewById(R.id.checkUploadProgress);
         category1EditText=findViewById(R.id.category1EditText);
+       // Date currentTime = Calendar.getInstance().getTime();
+       // Log.i("current",currentTime.toString());
+//        String format = "hh:mm:ss";
+//        SimpleDateFormat sdf = new SimpleDateFormat(format);
+//        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
+     //   System.out.format("%s\n", sdf.format(new Date()));
+        Calendar calender = Calendar.getInstance();
+
+        calender.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
+//        int xx= calender.get(Calendar.AM);
+//        int yy= calender.get(Calendar.PM);
+//
+//        Log.i("currentA",Integer.toString(xx)+"amna"+Integer.toString(yy));
+        //System.out.println(calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE) +  ":" + calender.getActualMinimum(Calendar.SECOND));
+        Log.i("current","Time: "+calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE)+" "+"Date: "+calender.get(Calendar.DAY_OF_MONTH)+"/"+calender.get(Calendar.MONTH)+"/"+calender.get(Calendar.YEAR));
+        currentTime="Time: "+calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE)+"     "+"Date: "+calender.get(Calendar.DAY_OF_MONTH)+"/"+calender.get(Calendar.MONTH)+"/"+calender.get(Calendar.YEAR);
         category2EditText=findViewById(R.id.category2EditText);
         priceCategory1EditText=findViewById(R.id.price1EditText);
         priceCategory2EditText=findViewById(R.id.price2EditText);
@@ -80,7 +101,7 @@ public class AdminActivity extends AppCompatActivity {
         userView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(),MainActivity2.class));
             }
         });
         String[] itemCategories={"Pasta","FriedRice","Chinese","Noodles","Burger","PavBaji","IceCream","Dhhosa","Soup","ColdDrink","Bakery","Nasta","Sweets","Pizza","Other Items","Offers","Create Post","Gift"};
@@ -123,19 +144,30 @@ public class AdminActivity extends AppCompatActivity {
                         itemNameEditText.setError("Error");
                         counter++;
                     }
-                    if (priceCategory1EditText.getText().toString().isEmpty()) {
+                    if (!mItemSpinner.getSelectedItem().toString().equals("Create Post")&&priceCategory1EditText.getText().toString().isEmpty()) {
                         priceCategory1EditText.setError("Error");
                         counter++;
                     }
-                    if(category1EditText.getText().toString().isEmpty()){
+                    if(!mItemSpinner.getSelectedItem().toString().equals("Create Post")&&category1EditText.getText().toString().isEmpty()){
                         category1EditText.setError("Error");
                         counter++;
                     }
                     if (counter == 0) {
-                        mStorageRef = FirebaseStorage.getInstance().getReference(mItemSpinner.getSelectedItem().toString());
-                        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mItemSpinner.getSelectedItem().toString());
-                        checkUploadProgress.setVisibility(View.VISIBLE);
-                        uploadFile();
+                        new AlertDialog.Builder(AdminActivity.this)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle("Upload on "+mItemSpinner.getSelectedItem().toString()+" ?")
+                                .setMessage("Do you definitely want to this on "+mItemSpinner.getSelectedItem().toString())
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        mStorageRef = FirebaseStorage.getInstance().getReference(mItemSpinner.getSelectedItem().toString());
+                                        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mItemSpinner.getSelectedItem().toString());
+                                        checkUploadProgress.setVisibility(View.VISIBLE);
+                                        uploadFile();
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
                     }
                 }
             }
@@ -215,7 +247,9 @@ public class AdminActivity extends AppCompatActivity {
                         fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-
+                                if(mItemSpinner.getSelectedItem().toString().equals("Create Post")){
+                                    category1EditText.setText(currentTime);
+                                }
                                 String downloadUrl = uri.toString();
                                 // picUrl=downloadUrl;
                                 //  Log.i("AMan",downloadUrl);
@@ -223,9 +257,11 @@ public class AdminActivity extends AppCompatActivity {
                                 Upload upload = new Upload(itemNameEditText.getText().toString().trim(), category1EditText.getText().toString().trim(), category2EditText.getText().toString().trim(), downloadUrl, priceCategory1EditText.getText().toString(), priceCategory2EditText.getText().toString());
 
                                 String uploadId = mDatabaseRef.push().getKey();
-                                mDatabaseRef.child(itemNameEditText.getText().toString()).setValue(upload);
-                                //mDatabaseRef.child(uploadId).setValue(upload);
-
+                                if(mItemSpinner.getSelectedItem().toString().equals("Create Post")){
+                                    mDatabaseRef.child(uploadId).setValue(upload);
+                                }else{
+                                    mDatabaseRef.child(itemNameEditText.getText().toString()).setValue(upload);
+                                }
                                 checkUploadProgress.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
                             }
