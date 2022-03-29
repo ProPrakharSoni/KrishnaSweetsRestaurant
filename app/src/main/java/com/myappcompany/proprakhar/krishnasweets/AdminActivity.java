@@ -87,8 +87,8 @@ public class AdminActivity extends AppCompatActivity {
 //
 //        Log.i("currentA",Integer.toString(xx)+"amna"+Integer.toString(yy));
         //System.out.println(calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE) +  ":" + calender.getActualMinimum(Calendar.SECOND));
-        Log.i("current","Time: "+calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE)+" "+"Date: "+calender.get(Calendar.DAY_OF_MONTH)+"/"+calender.get(Calendar.MONTH)+"/"+calender.get(Calendar.YEAR));
-        currentTime="Time: "+calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE)+"     "+"Date: "+calender.get(Calendar.DAY_OF_MONTH)+"/"+calender.get(Calendar.MONTH)+"/"+calender.get(Calendar.YEAR);
+       // Log.i("current","Time: "+calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE)+" "+"Date: "+calender.get(Calendar.DAY_OF_MONTH)+"/"+calender.get(Calendar.MONTH)+"/"+calender.get(Calendar.YEAR));
+        currentTime="Time: "+calender.get(Calendar.HOUR_OF_DAY) + ":" + calender.get(Calendar.MINUTE)+"     "+"Date: "+calender.get(Calendar.DAY_OF_MONTH)+"/"+(calender.get(Calendar.MONTH)+1)+"/"+calender.get(Calendar.YEAR);
         category2EditText=findViewById(R.id.category2EditText);
         priceCategory1EditText=findViewById(R.id.price1EditText);
         priceCategory2EditText=findViewById(R.id.price2EditText);
